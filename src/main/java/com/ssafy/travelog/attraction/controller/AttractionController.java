@@ -4,6 +4,7 @@ import com.ssafy.travelog.attraction.dto.AttractionDto;
 import com.ssafy.travelog.attraction.service.AttractionService;
 import com.ssafy.travelog.util.Message;
 import com.ssafy.travelog.util.StatusEnum;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ public class AttractionController {
     }
 
     @GetMapping("/search")
+    @ApiOperation(value = "검색 조건에 맞는 관광지를 검색한다.", response = AttractionDto.class)
     public ResponseEntity<Message> search(@RequestParam Map<String, String> map) {
         try {
             List<AttractionDto> attractions = service.searchByCondition(map);
@@ -55,6 +57,7 @@ public class AttractionController {
     }
 
     @GetMapping("/{content-id}")
+    @ApiOperation(value = "content-id를 기반으로 attraction의 상세정보를 확인한다.", response = AttractionDto.class)
     public ResponseEntity<Message> attrDescription(@PathVariable("content-id") int contentId) {
         try {
             AttractionDto attractions = service.attrDescription(contentId);
