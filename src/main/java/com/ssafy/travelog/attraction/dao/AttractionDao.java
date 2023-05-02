@@ -9,4 +9,6 @@ import java.util.Map;
 @Mapper
 public interface AttractionDao {
     List<AttractionDto> searchByCondition(Map<String, String> map);
+
+    AttractionDto attrDescription(int contentId);
 }

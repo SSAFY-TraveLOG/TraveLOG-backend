@@ -21,4 +21,9 @@ public class AttractionServiceImpl implements AttractionService {
     public List<AttractionDto> searchByCondition(Map<String, String> map) {
         return attractionDao.searchByCondition(map);
     }
+
+    @Override
+    public AttractionDto attrDescription(int contentId) {
+        return attractionDao.attrDescription(contentId);
+    }
 }

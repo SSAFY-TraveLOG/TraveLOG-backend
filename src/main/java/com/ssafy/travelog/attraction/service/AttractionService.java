@@ -8,4 +8,6 @@ import java.util.Map;
 
 public interface AttractionService {
     List<AttractionDto> searchByCondition(Map<String, String> map);
+
+    AttractionDto attrDescription(int contentId);
 }
