@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.travelog.attraction.dao.AttractionDao">
+
+    <select id="searchByCondition" parameterType="map" resultType="AttractionDto">
+        SELECT table1.content_id as contentId,
+        table1.content_type_id as contentTypeId,
+        table1.title,
+        table1.addr1,
+        table1.addr2,
+        table1.first_image as firstImage,
+        table1.readcount,
+        table1.latitude,
+        table1.longitude,
+        table1.mlevel,
+        table2.cnt as attractionLike
+        FROM attractionInfo AS table1
+        LEFT JOIN (SELECT content_id, count(content_id) AS cnt
+        FROM attractionLike
+        GROUP BY content_id) AS table2
+        ON table1.content_id = table2.content_id
+        WHERE 1=1
+        <if test="'sido-code'!=null">
+            AND table1.sido_code=#{sido-code}
+        </if>
+        <if test="'gugun-code'!=null">
+            AND table1.gugun_code=#{gugun-code}
+        </if>
+        <if test="content-type-id!=null">
+            AND table1.content_type_id=#{content-type-id}
+        </if>
+        ;
+    </select>
+
+</mapper>
