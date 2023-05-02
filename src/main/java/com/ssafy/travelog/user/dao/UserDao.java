@@ -8,6 +8,6 @@ import java.util.Map;
 
 @Mapper
 public interface UserDao {
-    int modifyUser(UserDto user) throws SQLException;
+    int modifyUser(Map<String, String> param) throws SQLException;
     int deleteUser(Map<String, String> param) throws SQLException;
 }
