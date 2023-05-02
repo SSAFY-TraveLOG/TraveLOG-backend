@@ -10,17 +10,16 @@
             <if test="userName != null">user_name = #{userName},</if>
             <if test="password != null">user_password = #{password}</if>
         </set>
-        where user_id = #{userId}
+        where user_no = #{id}
     </update>
 
     <update id="deleteUser" parameterType="map">
-        update user
-            user_id = null,
-            user_name = null,
-            user_password = null,
-            email_id = null,
-            email_domain = null,
-            join_date = null,
+        update user set
+            user_id = "INACTIVE",
+            user_name = "INACTIVE",
+            user_password = "INACTIVE",
+            email_id = "INACTIVE",
+            email_domain = "INACTIVE",
             user_state = 2
         where user_no = #{id}
     </update>
