@@ -22,4 +22,9 @@ public class AuthServiceImpl implements AuthService{
     public int join(Map<String, String> map) throws SQLException {
         return authDao.join(map);
     }
+
+    @Override
+    public UserDto login(Map<String, String> map) throws SQLException {
+        return authDao.login(map);
+    }
 }

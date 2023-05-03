@@ -4,10 +4,25 @@
 
 <mapper namespace="com.ssafy.travelog.auth.dao.AuthDao">
 
+    <resultMap type="com.ssafy.travelog.auth.dto.UserDto" id="userInfo">
+        <result column="user_no" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="email_id" property="emailId"/>
+        <result column="email_domain" property="emailDomain"/>
+        <result column="user_state" property="status" />
+    </resultMap>
+
     <insert id="join" parameterType="map">
             insert into user
                 (user_id, user_password, user_name, email_id, email_domain)
             values (#{userId},#{password},#{userName},#{emailId},#{emailDomain} );
     </insert>
+
+    <select id="login" parameterType="map" resultMap="userInfo">
+        select user_no, user_id,user_name,email_id,email_domain, user_state
+        from user
+        where user_id = #{userId} and user_password = #{password};
+    </select>
 
 </mapper>
