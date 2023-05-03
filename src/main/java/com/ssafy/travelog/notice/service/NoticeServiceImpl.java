@@ -24,4 +24,9 @@ public class NoticeServiceImpl implements NoticeService {
     public int update(Map<String, String> map) {
         return noticeDao.update(map);
     }
+
+    @Override
+    public int delete(int noticeNo) {
+        return noticeDao.delete(noticeNo);
+    }
 }

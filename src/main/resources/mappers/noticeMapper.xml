@@ -21,4 +21,9 @@
         WHERE notice_no=#{notice_no};
     </update>
 
+    <delete id="delete" parameterType="int">
+        DELETE FROM notice
+        WHERE notice_no=#{notice_no};
+    </delete>
+
 </mapper>

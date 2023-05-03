@@ -9,4 +9,6 @@ public interface NoticeDao {
     int insert(Map<String, String> map);
 
     int update(Map<String, String> map);
+
+    int delete(int noticeNo);
 }
