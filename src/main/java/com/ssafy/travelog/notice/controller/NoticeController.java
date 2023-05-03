@@ -8,10 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.Charset;
 import java.util.Map;
@@ -27,7 +24,7 @@ public class NoticeController {
     }
 
     @PostMapping("/article")
-    public ResponseEntity<Message> insert(@RequestParam Map<String, String> map) {
+    public ResponseEntity<Message> insert(@RequestBody Map<String, String> map) {
         try {
             int ret = noticeService.insert(map);
 

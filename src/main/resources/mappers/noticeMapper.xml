@@ -6,7 +6,7 @@
 
     <insert id="insert" parameterType="map">
         INSERT INTO notice (subject, content)
-        VALUE ("예시 제목입니다", "예시 내용입니다");
+        VALUE (#{subject}, #{content});
     </insert>
 
 </mapper>
