@@ -8,5 +8,5 @@ import java.util.Map;
 
 @Mapper
 public interface AuthDao {
-    
+    int join(Map<String, String> map) throws SQLException;
 }

@@ -17,4 +17,9 @@ public class AuthServiceImpl implements AuthService{
     public AuthServiceImpl(AuthDao authDao) {
         this.authDao = authDao;
     }
+
+    @Override
+    public int join(Map<String, String> map) throws SQLException {
+        return authDao.join(map);
+    }
 }

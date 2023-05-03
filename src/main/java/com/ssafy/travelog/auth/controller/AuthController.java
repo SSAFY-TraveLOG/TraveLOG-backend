@@ -28,6 +28,42 @@ public class AuthController {
         this.authService = authService;
     }
 
+    @PostMapping("/join")
+    public ResponseEntity<Message> join(@RequestBody Map<String, String> map){
+
+        try{
+            int ret = authService.join(map);
+
+            if(ret == 1) {
+
+                UserDto userDto = new UserDto();
+                userDto.setUserId(map.get("userId"));
+                userDto.setUserName(map.get("userName"));
+                userDto.setEmailId(map.get("emailId"));
+                userDto.setEmailDomain(map.get("emailDomain"));
+
+
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(userDto);
+
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            }
+            else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        }catch (Exception e){
+           return exceptionHandling(e);
+        }
+
+    }
+
     private ResponseEntity<Message> exceptionHandling(Exception e) {
         e.printStackTrace();
         Message message = new Message();

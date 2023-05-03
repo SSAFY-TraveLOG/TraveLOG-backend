@@ -4,5 +4,10 @@
 
 <mapper namespace="com.ssafy.travelog.auth.dao.AuthDao">
 
+    <insert id="join" parameterType="map">
+            insert into user
+                (user_id, user_password, user_name, email_id, email_domain)
+            values (#{userId},#{password},#{userName},#{emailId},#{emailDomain} );
+    </insert>
 
 </mapper>
