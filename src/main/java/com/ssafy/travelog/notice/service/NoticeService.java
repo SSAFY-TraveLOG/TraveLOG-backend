@@ -1,13 +1,10 @@
 package com.ssafy.travelog.notice.service;
 
-import com.ssafy.travelog.notice.dao.NoticeDao;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ssafy.travelog.notice.dto.NoticeDto;
+import org.springframework.stereotype.Service;
 
-public class NoticeService {
-    private NoticeDao noticeDao;
+import java.util.Map;
 
-    @Autowired
-    public NoticeService(NoticeDao noticeDao) {
-        this.noticeDao = noticeDao;
-    }
+public interface NoticeService {
+    int insert(Map<String, String> map);
 }
