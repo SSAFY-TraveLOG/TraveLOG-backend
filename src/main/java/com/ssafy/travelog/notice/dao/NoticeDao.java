@@ -7,4 +7,6 @@ import java.util.Map;
 @Mapper
 public interface NoticeDao {
     int insert(Map<String, String> map);
+
+    int update(Map<String, String> map);
 }

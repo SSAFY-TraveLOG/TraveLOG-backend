@@ -48,6 +48,32 @@ public class NoticeController {
         }
     }
 
+    @PatchMapping("/article")
+    public ResponseEntity<Message> update(@RequestParam(value = "notice_no") int notice_no, @RequestBody Map<String, String> map) {
+        try {
+            map.put("notice_no", Integer.toString(notice_no));
+            int ret = noticeService.update(map);
+
+            if (ret != 0) {
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(ret);
+
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return exceptionHandling(e);
+        }
+    }
+
     private ResponseEntity<Message> exceptionHandling(Exception e) {
         Message message = new Message();
         HttpHeaders headers = new HttpHeaders();

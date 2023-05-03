@@ -19,4 +19,9 @@ public class NoticeServiceImpl implements NoticeService {
     public int insert(Map<String, String> map) {
         return noticeDao.insert(map);
     }
+
+    @Override
+    public int update(Map<String, String> map) {
+        return noticeDao.update(map);
+    }
 }

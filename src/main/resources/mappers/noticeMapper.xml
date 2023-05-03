@@ -9,4 +9,16 @@
         VALUE (#{subject}, #{content});
     </insert>
 
+    <update id="update" parameterType="map">
+        UPDATE notice
+        SET modified_time=now()
+        <if test="subject != null">
+            ,subject=#{subject}
+        </if>
+        <if test="content != null">
+            ,content=#{content}
+        </if>
+        WHERE notice_no=#{notice_no};
+    </update>
+
 </mapper>
