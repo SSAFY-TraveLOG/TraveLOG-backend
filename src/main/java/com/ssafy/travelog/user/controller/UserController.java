@@ -1,25 +1,24 @@
 package com.ssafy.travelog.user.controller;
 
+import com.ssafy.travelog.user.dto.UserDto;
 import com.ssafy.travelog.user.service.UserService;
 import com.ssafy.travelog.util.Message;
 import com.ssafy.travelog.util.StatusEnum;
+import io.swagger.annotations.ApiOperation;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.Charset;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
-@MapperScan(basePackages = {"com.ssafy.travelog.user.dao"})
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 public class UserController {
 
     UserService userService;
@@ -30,6 +29,7 @@ public class UserController {
     }
 
     @PatchMapping("/modify")
+    @ApiOperation(value = "유저 정보를 수정합니다.", response = UserDto.class)
     public ResponseEntity<Message> modifyUser(@RequestBody Map<String, String> map) {
 
         try {
@@ -56,6 +56,7 @@ public class UserController {
     }
 
     @PatchMapping("/delete")
+    @ApiOperation(value = "유저 정보를 삭제합니다.", response = UserDto.class)
     public ResponseEntity<Message> deleteUser(@RequestBody Map<String, String> map) {
 
         try {
