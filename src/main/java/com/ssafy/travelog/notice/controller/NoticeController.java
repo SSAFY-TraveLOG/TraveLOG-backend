@@ -49,9 +49,9 @@ public class NoticeController {
     }
 
     @PatchMapping("/article")
-    public ResponseEntity<Message> update(@RequestParam(value = "notice_no") int notice_no, @RequestBody Map<String, String> map) {
+    public ResponseEntity<Message> update(@RequestParam(value = "notice-no") int noticeNo, @RequestBody Map<String, String> map) {
         try {
-            map.put("notice_no", Integer.toString(notice_no));
+            map.put("notice-no", Integer.toString(noticeNo));
             int ret = noticeService.update(map);
 
             if (ret != 0) {
