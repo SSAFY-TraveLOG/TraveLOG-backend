@@ -9,5 +9,5 @@ public interface AuthService {
     int join(Map<String, String> map) throws SQLException;
     UserDto login(Map<String, String> map) throws SQLException;
     int checkId(Map<String, String> map) throws SQLException;
-
+    int checkEmail(Map<String, String> map) throws SQLException;
 }

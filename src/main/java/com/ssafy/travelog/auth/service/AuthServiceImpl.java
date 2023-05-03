@@ -32,4 +32,9 @@ public class AuthServiceImpl implements AuthService{
     public int checkId(Map<String, String> map) throws SQLException {
         return authDao.checkId(map);
     }
+
+    @Override
+    public int checkEmail(Map<String, String> map) throws SQLException {
+        return authDao.checkEmail(map);
+    }
 }
