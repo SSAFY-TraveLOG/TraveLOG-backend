@@ -27,4 +27,9 @@ public class AuthServiceImpl implements AuthService{
     public UserDto login(Map<String, String> map) throws SQLException {
         return authDao.login(map);
     }
+
+    @Override
+    public int checkId(Map<String, String> map) throws SQLException {
+        return authDao.checkId(map);
+    }
 }

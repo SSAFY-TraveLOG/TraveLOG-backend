@@ -10,6 +10,6 @@ import java.util.Map;
 public interface AuthDao {
     int join(Map<String, String> map) throws SQLException;
     UserDto login(Map<String, String> map) throws SQLException;
-
+    int checkId(Map<String, String> map) throws SQLException;
 
 }
