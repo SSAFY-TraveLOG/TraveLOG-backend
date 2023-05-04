@@ -1,9 +1,11 @@
 package com.ssafy.travelog.notice.service;
 
 import com.ssafy.travelog.notice.dao.NoticeDao;
+import com.ssafy.travelog.notice.dto.NoticeDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -28,5 +30,10 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public int delete(int noticeNo) {
         return noticeDao.delete(noticeNo);
+    }
+
+    @Override
+    public List<NoticeDto> search(Map<String, String> map) {
+        return noticeDao.search(map);
     }
 }

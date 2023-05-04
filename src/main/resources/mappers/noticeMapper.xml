@@ -4,6 +4,14 @@
 
 <mapper namespace="com.ssafy.travelog.notice.dao.NoticeDao">
 
+    <resultMap id="notice" type="NoticeDto">
+        <result column="notice_no" property="noticeNo"/>
+        <result column="subject" property="subject"/>
+        <result column="content" property="content"/>
+        <result column="register_time" property="registerTime"/>
+        <result column="modified_time" property="modifiedTime"/>
+    </resultMap>
+
     <insert id="insert" parameterType="map">
         INSERT INTO notice (subject, content)
         VALUE (#{subject}, #{content});
@@ -25,5 +33,16 @@
         DELETE FROM notice
         WHERE notice_no=#{notice_no};
     </delete>
+
+    <select id="search" parameterType="map" resultMap="notice">
+        SELECT *
+        FROM notice
+        <if test='type.equals("1")'>
+            WHERE subject LIKE concat("%", #{value}, "%");
+        </if>
+        <if test='type.equals("2")'>
+            WHERE content LIKE concat("%", #{value}, "%");
+        </if>
+    </select>
 
 </mapper>

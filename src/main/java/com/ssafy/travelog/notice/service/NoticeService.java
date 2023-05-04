@@ -1,5 +1,8 @@
 package com.ssafy.travelog.notice.service;
 
+import com.ssafy.travelog.notice.dto.NoticeDto;
+
+import java.util.List;
 import java.util.Map;
 
 public interface NoticeService {
@@ -8,4 +11,6 @@ public interface NoticeService {
     int update(Map<String, String> map);
 
     int delete(int noticeNo);
+
+    List<NoticeDto> search(Map<String, String> map);
 }
