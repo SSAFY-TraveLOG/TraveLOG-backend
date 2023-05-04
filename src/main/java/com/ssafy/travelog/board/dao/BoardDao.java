@@ -11,5 +11,7 @@ public interface BoardDao {
 
     int modifyArticle(Map<String, String> map) throws SQLException;
 
+    int increaseReadCount(Map<String, String> map) throws SQLException;
+
     int deleteArticle(Map<String, String> map) throws SQLException;
 }

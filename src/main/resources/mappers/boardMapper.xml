@@ -16,6 +16,12 @@
         where article_no = #{articleNo}
     </update>
 
+    <update id="increaseReadCount" parameterType="map">
+        update board set
+            readcount = readcount+1
+        where article_no = #{articleNo}
+    </update>
+
     <delete id="deleteArticle" parameterType="map">
         delete from board
             where article_no = #{articleNo};
