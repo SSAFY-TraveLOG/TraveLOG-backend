@@ -90,8 +90,8 @@ public class AttractionController {
 
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        message.setStatus(StatusEnum.INTERNAL_SERER_ERROR);
-        message.setCode(StatusEnum.INTERNAL_SERER_ERROR);
+        message.setStatus(StatusEnum.INTERNAL_SERVER_ERROR);
+        message.setCode(StatusEnum.INTERNAL_SERVER_ERROR);
         message.setMessage("요청에 실패하였습니다.");
         message.setData(e.getMessage());
 
