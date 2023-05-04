@@ -8,6 +8,14 @@ public class BoardDto {
 
     private String subject;
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     private String content;
 
     private int readCount;
