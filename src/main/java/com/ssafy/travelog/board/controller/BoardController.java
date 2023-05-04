@@ -24,11 +24,11 @@ public class BoardController {
         this.boardService = boardService;
     }
 
-    @RequestMapping("/write")
+    @PostMapping("/write")
     public ResponseEntity<Message> writeArticle(@RequestBody Map<String, String> map){
         try {
             int ret = boardService.writeArticle(map);
-            if(ret == 1){
+            if (ret == 1) {
                 Message message = new Message();
                 HttpHeaders headers = new HttpHeaders();
 
