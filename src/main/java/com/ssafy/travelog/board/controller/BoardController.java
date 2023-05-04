@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -47,6 +48,34 @@ public class BoardController {
             return exceptionHandling(e);
         }
     }
+
+
+    @DeleteMapping("/delete/{articleNo}")
+    public ResponseEntity<Message> deleteArticle(@PathVariable String articleNo){
+        try {
+            Map<String, String> map = new HashMap<>();
+            map.put("articleNo", articleNo);
+            int ret = boardService.deleteArticle(map);
+            if (ret == 1) {
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(ret);
+
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e){
+            return exceptionHandling(e);
+        }
+    }
+
 
     private ResponseEntity<Message> exceptionHandling(Exception e) {
         e.printStackTrace();

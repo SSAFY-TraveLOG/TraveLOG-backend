@@ -7,4 +7,9 @@
         insert into board (user_no, subject, content) value (#{userNo}, #{subject}, #{content});
     </insert>
 
+    <delete id="deleteArticle" parameterType="map">
+        delete from board
+            where article_no = #{articleNo};
+    </delete>
+
 </mapper>

@@ -20,4 +20,9 @@ public class BoardServiceImpl implements BoardService {
     public int writeArticle(Map<String, String> map) throws SQLException {
         return boardDao.writeArticle(map);
     }
+
+    @Override
+    public int deleteArticle(Map<String, String> map) throws SQLException {
+        return boardDao.deleteArticle(map);
+    }
 }
