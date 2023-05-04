@@ -1,13 +1,10 @@
-package com.ssafy.travelog.auth.controller;
+package com.ssafy.travelog.board.controller;
 
-import com.ssafy.travelog.notice.dto.NoticeDto;
-import com.ssafy.travelog.user.dto.UserDto;
-import com.ssafy.travelog.auth.service.AuthService;
+import com.ssafy.travelog.board.dto.BoardDto;
+import com.ssafy.travelog.board.service.BoardService;
 import com.ssafy.travelog.util.Message;
 import com.ssafy.travelog.util.StatusEnum;
 import io.swagger.annotations.ApiOperation;
-import org.apache.catalina.User;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,65 +13,27 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/board")
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST})
-public class AuthController {
-
-    private AuthService authService;
+public class BoardController {
+    private BoardService boardService;
 
     @Autowired
-    public AuthController(AuthService authService) {
-        this.authService = authService;
+    public BoardController(BoardService boardService) {
+        this.boardService = boardService;
     }
 
-    @PostMapping("/join")
-    @ApiOperation(value = "회원가입을 한다.", response = UserDto.class)
-    public ResponseEntity<Message> join(@RequestBody Map<String, String> map){
-
-        try{
-            int ret = authService.join(map);
-
-            if(ret == 1) {
-
-                UserDto userDto = new UserDto();
-                userDto.setUserId(map.get("userId"));
-                userDto.setUserName(map.get("userName"));
-                userDto.setEmailId(map.get("emailId"));
-                userDto.setEmailDomain(map.get("emailDomain"));
-
-
-                Message message = new Message();
-                HttpHeaders headers = new HttpHeaders();
-
-                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
-                message.setStatus(StatusEnum.OK);
-                message.setCode(StatusEnum.OK);
-                message.setMessage("요청에 성공하였습니다.");
-                message.setData(userDto);
-
-                return new ResponseEntity<>(message, headers, HttpStatus.OK);
-            }
-            else {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-        }catch (Exception e){
-           return exceptionHandling(e);
-        }
-
-    }
-
-    @PostMapping("/check")
-    @ApiOperation(value = "로그인을 한다.", response = UserDto.class)
-    public ResponseEntity<Message> login(@RequestBody Map<String, String> map){
-
-        try{
-            UserDto ret = authService.login(map);
-
-            if(ret != null) {
+    @PostMapping("/write")
+    @ApiOperation(value = "글을 작성한다.", response = BoardDto.class)
+    public ResponseEntity<Message> writeArticle(@RequestBody Map<String, String> map){
+        try {
+            int ret = boardService.writeArticle(map);
+            if (ret == 1) {
                 Message message = new Message();
                 HttpHeaders headers = new HttpHeaders();
 
@@ -86,24 +45,23 @@ public class AuthController {
                 message.setData(ret);
 
                 return new ResponseEntity<>(message, headers, HttpStatus.OK);
-            }
-            else {
+            } else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-        }catch (Exception e){
+        } catch (Exception e){
             return exceptionHandling(e);
         }
-
     }
 
-    @PostMapping("/logout")
-    @ApiOperation(value = "로그아웃을 한다.", response = UserDto.class)
-    public ResponseEntity<Message> logout(@RequestBody Map<String, String> map){
-
-        try{
-            int ret = 1;
-
-            if(ret == 1) {
+    @PostMapping("/view/{articleNo}")
+    @ApiOperation(value = "글의 제목과 내용을 가져온다.", response = BoardDto.class)
+    public ResponseEntity<Message> getArticle(@PathVariable String articleNo){
+        try {
+            BoardDto ret = null;
+            Map<String, String> map = new HashMap<>();
+            map.put("articleNo", articleNo);
+            ret = boardService.getArticle(map);
+            if (ret != null) {
                 Message message = new Message();
                 HttpHeaders headers = new HttpHeaders();
 
@@ -115,54 +73,21 @@ public class AuthController {
                 message.setData(ret);
 
                 return new ResponseEntity<>(message, headers, HttpStatus.OK);
-            }
-            else {
+            } else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-        }catch (Exception e){
+        } catch (Exception e){
             return exceptionHandling(e);
         }
-
     }
-
-    @PostMapping("/check/id")
-    @ApiOperation(value = "아이디 중복체크를 한다.", response = UserDto.class)
-    public ResponseEntity<Message> checkId(@RequestBody Map<String, String> map){
-
-        try{
-            int ret = authService.checkId(map);
-
-            if(ret == 0) {
-                Message message = new Message();
-                HttpHeaders headers = new HttpHeaders();
-
-                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
-                message.setStatus(StatusEnum.OK);
-                message.setCode(StatusEnum.OK);
-                message.setMessage("요청에 성공하였습니다.");
-                message.setData(ret);
-
-                return new ResponseEntity<>(message, headers, HttpStatus.OK);
-            }
-            else {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-        }catch (Exception e){
-            return exceptionHandling(e);
-        }
-
-    }
-
     
-    @PostMapping("/check/email")
-    @ApiOperation(value = "이메일 중복체크를 한다.", response = UserDto.class)
-    public ResponseEntity<Message> checkEmail(@RequestBody Map<String, String> map){
-
-        try{
-            int ret = authService.checkEmail(map);
-
-            if(ret == 0) {
+    @PatchMapping("/modify/{articleNo}")
+    @ApiOperation(value = "글의 제목과 내용을 수정한다.", response = BoardDto.class)
+    public ResponseEntity<Message> modifyArticle(@PathVariable String articleNo, @RequestBody Map<String, String> map){
+        try {
+            map.put("articleNo", articleNo);
+            int ret = boardService.modifyArticle(map);
+            if (ret == 1) {
                 Message message = new Message();
                 HttpHeaders headers = new HttpHeaders();
 
@@ -174,15 +99,67 @@ public class AuthController {
                 message.setData(ret);
 
                 return new ResponseEntity<>(message, headers, HttpStatus.OK);
-            }
-            else {
+            } else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-        }catch (Exception e){
+        } catch (Exception e){
             return exceptionHandling(e);
         }
-
     }
+
+    @DeleteMapping("/delete/{articleNo}")
+    @ApiOperation(value = "글을 삭제한다.", response = BoardDto.class)
+    public ResponseEntity<Message> deleteArticle(@PathVariable String articleNo){
+        try {
+            Map<String, String> map = new HashMap<>();
+            map.put("articleNo", articleNo);
+            int ret = boardService.deleteArticle(map);
+            if (ret == 1) {
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(ret);
+
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e){
+            return exceptionHandling(e);
+        }
+    }
+
+    @GetMapping("/search")
+    @ApiOperation(value = "검색 조건에 맞는 글 리스트를 리턴한다.", response = BoardDto.class)
+    public ResponseEntity<Message> searchArticle(@RequestParam Map<String, String> map){
+        try {
+            List<BoardDto> articleList = boardService.search(map);
+
+            if (articleList != null) {
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(articleList);
+
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e){
+            return exceptionHandling(e);
+        }
+    }
+
 
     private ResponseEntity<Message> exceptionHandling(Exception e) {
         e.printStackTrace();
@@ -196,5 +173,4 @@ public class AuthController {
         message.setMessage("요청에 실패하였습니다.");
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
-
 }

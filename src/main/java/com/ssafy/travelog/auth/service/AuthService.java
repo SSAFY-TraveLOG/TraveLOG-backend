@@ -1,6 +1,6 @@
 package com.ssafy.travelog.auth.service;
 
-import com.ssafy.travelog.auth.dto.UserDto;
+import com.ssafy.travelog.user.dto.UserDto;
 
 import java.sql.SQLException;
 import java.util.Map;

@@ -90,8 +90,8 @@ public class UserController {
 
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        message.setStatus(StatusEnum.NOT_FOUND);
-        message.setCode(StatusEnum.NOT_FOUND);
+        message.setStatus(StatusEnum.INTERNAL_SERVER_ERROR);
+        message.setCode(StatusEnum.INTERNAL_SERVER_ERROR);
         message.setMessage("요청에 실패하였습니다.");
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
