@@ -15,4 +15,6 @@ public interface NoticeDao {
     int delete(int noticeNo);
 
     List<NoticeDto> search(Map<String, String> map);
+
+    List<NoticeDto> searchAll();
 }

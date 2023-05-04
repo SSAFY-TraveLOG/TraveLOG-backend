@@ -36,4 +36,9 @@ public class NoticeServiceImpl implements NoticeService {
     public List<NoticeDto> search(Map<String, String> map) {
         return noticeDao.search(map);
     }
+
+    @Override
+    public List<NoticeDto> searchAll() {
+        return noticeDao.searchAll();
+    }
 }

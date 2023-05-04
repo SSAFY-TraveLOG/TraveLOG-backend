@@ -45,4 +45,9 @@
         </if>
     </select>
 
+    <select id="searchAll" resultMap="notice">
+        SELECT *
+        FROM notice;
+    </select>
+
 </mapper>
