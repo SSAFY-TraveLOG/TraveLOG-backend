@@ -3,6 +3,7 @@ package com.ssafy.travelog.board.service;
 import com.ssafy.travelog.board.dto.BoardDto;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 public interface BoardService {
@@ -13,4 +14,6 @@ public interface BoardService {
     int modifyArticle(Map<String, String> map) throws SQLException;
 
     int deleteArticle(Map<String, String> map) throws SQLException;
+
+    List<BoardDto> search(Map<String, String> map) throws SQLException;
 }

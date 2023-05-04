@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -118,6 +119,31 @@ public class BoardController {
                 message.setCode(StatusEnum.OK);
                 message.setMessage("요청에 성공하였습니다.");
                 message.setData(ret);
+
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e){
+            return exceptionHandling(e);
+        }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Message> searchArticle(@RequestParam Map<String, String> map){
+        try {
+            List<BoardDto> articleList = boardService.search(map);
+
+            if (articleList != null) {
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(articleList);
 
                 return new ResponseEntity<>(message, headers, HttpStatus.OK);
             } else {

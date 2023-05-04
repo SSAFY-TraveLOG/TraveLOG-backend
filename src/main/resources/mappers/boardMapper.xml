@@ -45,4 +45,20 @@
             where article_no = #{articleNo};
     </delete>
 
+    <select id="searchArticle" parameterType="map" resultMap="articleInfo">
+        select *
+        from board
+        <if test="word != null">
+            <if test='key.equals("subject")'>
+                where subject like concat('%', #{word}, '%');
+            </if>
+            <if test='key.equals("userName")'>
+                WHERE (select user_id from user where user.user_no = board.user_no) LIKE concat("%", #{word}, "%");
+            </if>
+            <if test='key.equals("content") || key == null'>
+                WHERE content LIKE concat("%", #{word}, "%");
+            </if>
+        </if>
+    </select>
+
 </mapper>

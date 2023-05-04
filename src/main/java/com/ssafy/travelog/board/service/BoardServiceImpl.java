@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -38,5 +39,10 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public int deleteArticle(Map<String, String> map) throws SQLException {
         return boardDao.deleteArticle(map);
+    }
+
+    @Override
+    public List<BoardDto> search(Map<String, String> map) throws SQLException {
+        return boardDao.searchArticle(map);
     }
 }
