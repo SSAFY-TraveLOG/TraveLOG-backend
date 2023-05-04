@@ -1,11 +1,9 @@
-package com.ssafy.travelog.auth.controller;
+package com.ssafy.travelog.notice.controller;
 
-import com.ssafy.travelog.user.dto.UserDto;
-import com.ssafy.travelog.auth.service.AuthService;
+import com.ssafy.travelog.notice.dto.NoticeDto;
+import com.ssafy.travelog.notice.service.NoticeService;
 import com.ssafy.travelog.util.Message;
 import com.ssafy.travelog.util.StatusEnum;
-import org.apache.catalina.User;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,63 +12,25 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/auth")
-//@MapperScan(basePackages = {"com.ssafy.travelog.auth.dao"})
-public class AuthController {
-
-    private AuthService authService;
+@RequestMapping("/notice")
+public class NoticeController {
+    private NoticeService noticeService;
 
     @Autowired
-    public AuthController(AuthService authService) {
-        this.authService = authService;
+    public NoticeController(NoticeService service) {
+        this.noticeService = service;
     }
 
-    @PostMapping("/join")
-    public ResponseEntity<Message> join(@RequestBody Map<String, String> map){
+    @PostMapping("/article")
+    public ResponseEntity<Message> insert(@RequestBody Map<String, String> map) {
+        try {
+            int ret = noticeService.insert(map);
 
-        try{
-            int ret = authService.join(map);
-
-            if(ret == 1) {
-
-                UserDto userDto = new UserDto();
-                userDto.setUserId(map.get("userId"));
-                userDto.setUserName(map.get("userName"));
-                userDto.setEmailId(map.get("emailId"));
-                userDto.setEmailDomain(map.get("emailDomain"));
-
-
-                Message message = new Message();
-                HttpHeaders headers = new HttpHeaders();
-
-                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
-                message.setStatus(StatusEnum.OK);
-                message.setCode(StatusEnum.OK);
-                message.setMessage("요청에 성공하였습니다.");
-                message.setData(userDto);
-
-                return new ResponseEntity<>(message, headers, HttpStatus.OK);
-            }
-            else {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-        }catch (Exception e){
-           return exceptionHandling(e);
-        }
-
-    }
-
-    @PostMapping("/check")
-    public ResponseEntity<Message> login(@RequestBody Map<String, String> map){
-
-        try{
-            UserDto ret = authService.login(map);
-
-            if(ret != null) {
+            if (ret != 0) {
                 Message message = new Message();
                 HttpHeaders headers = new HttpHeaders();
 
@@ -82,23 +42,21 @@ public class AuthController {
                 message.setData(ret);
 
                 return new ResponseEntity<>(message, headers, HttpStatus.OK);
-            }
-            else {
+            } else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return exceptionHandling(e);
         }
-
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<Message> logout(@RequestBody Map<String, String> map){
+    @PatchMapping("/article")
+    public ResponseEntity<Message> update(@RequestParam(value = "notice-no") int noticeNo, @RequestBody Map<String, String> map) {
+        try {
+            map.put("notice-no", Integer.toString(noticeNo));
+            int ret = noticeService.update(map);
 
-        try{
-            int ret = 1;
-
-            if(ret == 1) {
+            if (ret != 0) {
                 Message message = new Message();
                 HttpHeaders headers = new HttpHeaders();
 
@@ -110,23 +68,20 @@ public class AuthController {
                 message.setData(ret);
 
                 return new ResponseEntity<>(message, headers, HttpStatus.OK);
-            }
-            else {
+            } else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return exceptionHandling(e);
         }
-
     }
 
-    @PostMapping("/check/id")
-    public ResponseEntity<Message> checkId(@RequestBody Map<String, String> map){
+    @DeleteMapping("/delete")
+    public ResponseEntity<Message> delete(@RequestParam(value = "notice-no") int noticeNo) {
+        try {
+            int ret = noticeService.delete(noticeNo);
 
-        try{
-            int ret = authService.checkId(map);
-
-            if(ret == 0) {
+            if (ret != 0) {
                 Message message = new Message();
                 HttpHeaders headers = new HttpHeaders();
 
@@ -138,24 +93,20 @@ public class AuthController {
                 message.setData(ret);
 
                 return new ResponseEntity<>(message, headers, HttpStatus.OK);
-            }
-            else {
+            } else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return exceptionHandling(e);
         }
-
     }
 
-    
-    @PostMapping("/check/email")
-    public ResponseEntity<Message> checkEmail(@RequestBody Map<String, String> map){
+    @GetMapping("/search")
+    public ResponseEntity<Message> search(@RequestParam Map<String, String> map) {
+        try {
+            List<NoticeDto> noticeList = noticeService.search(map);
 
-        try{
-            int ret = authService.checkEmail(map);
-
-            if(ret == 0) {
+            if (noticeList != null) {
                 Message message = new Message();
                 HttpHeaders headers = new HttpHeaders();
 
@@ -164,30 +115,81 @@ public class AuthController {
                 message.setStatus(StatusEnum.OK);
                 message.setCode(StatusEnum.OK);
                 message.setMessage("요청에 성공하였습니다.");
-                message.setData(ret);
+                message.setData(noticeList);
 
                 return new ResponseEntity<>(message, headers, HttpStatus.OK);
-            }
-            else {
+            } else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return exceptionHandling(e);
         }
+    }
 
+    @GetMapping("/list")
+    public ResponseEntity<Message> searchAll() {
+        try {
+            List<NoticeDto> noticeList = noticeService.searchAll();
+
+            if (noticeList != null) {
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(noticeList);
+
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return exceptionHandling(e);
+        }
+    }
+
+    @GetMapping("/{notice-no}")
+    public ResponseEntity<Message> searchByNo(@PathVariable("notice-no") int noticeNo) {
+        try {
+            NoticeDto notice = noticeService.searchByNo(noticeNo);
+
+            if (notice != null) {
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(notice);
+
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return exceptionHandling(e);
+        }
     }
 
     private ResponseEntity<Message> exceptionHandling(Exception e) {
-        e.printStackTrace();
         Message message = new Message();
         HttpHeaders headers = new HttpHeaders();
 
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        message.setStatus(StatusEnum.NOT_FOUND);
-        message.setCode(StatusEnum.NOT_FOUND);
+        message.setStatus(StatusEnum.INTERNAL_SERVER_ERROR);
+        message.setCode(StatusEnum.INTERNAL_SERVER_ERROR);
         message.setMessage("요청에 실패하였습니다.");
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        message.setData(e.getMessage());
+
+        e.printStackTrace();
+
+        return new ResponseEntity<>(message, headers, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
