@@ -3,9 +3,18 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ssafy.travelog.board.dao.BoardDao">
+
     <insert id="writeArticle" parameterType="map">
         insert into board (user_no, subject, content) value (#{userNo}, #{subject}, #{content});
     </insert>
+
+    <update id="modifyArticle" parameterType="map">
+        update board set
+            subject = #{subject},
+            content = #{content},
+            modified_time = now()
+        where article_no = #{articleNo}
+    </update>
 
     <delete id="deleteArticle" parameterType="map">
         delete from board

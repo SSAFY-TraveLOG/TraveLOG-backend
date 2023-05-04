@@ -22,6 +22,11 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    public int modifyArticle(Map<String, String> map) throws SQLException {
+        return boardDao.modifyArticle(map);
+    }
+
+    @Override
     public int deleteArticle(Map<String, String> map) throws SQLException {
         return boardDao.deleteArticle(map);
     }
