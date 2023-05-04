@@ -4,6 +4,7 @@ import com.ssafy.travelog.notice.dto.NoticeDto;
 import com.ssafy.travelog.notice.service.NoticeService;
 import com.ssafy.travelog.util.Message;
 import com.ssafy.travelog.util.StatusEnum;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/notice")
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 public class NoticeController {
     private NoticeService noticeService;
 
@@ -26,6 +28,7 @@ public class NoticeController {
     }
 
     @PostMapping("/article")
+    @ApiOperation(value = "공지사항을 등록한다.", response = NoticeDto.class)
     public ResponseEntity<Message> insert(@RequestBody Map<String, String> map) {
         try {
             int ret = noticeService.insert(map);
@@ -51,6 +54,7 @@ public class NoticeController {
     }
 
     @PatchMapping("/article")
+    @ApiOperation(value = "공지사항을 수정한다.", response = NoticeDto.class)
     public ResponseEntity<Message> update(@RequestParam(value = "notice-no") int noticeNo, @RequestBody Map<String, String> map) {
         try {
             map.put("notice-no", Integer.toString(noticeNo));
@@ -77,6 +81,7 @@ public class NoticeController {
     }
 
     @DeleteMapping("/delete")
+    @ApiOperation(value = "공지사항을 삭제한다.", response = NoticeDto.class)
     public ResponseEntity<Message> delete(@RequestParam(value = "notice-no") int noticeNo) {
         try {
             int ret = noticeService.delete(noticeNo);
@@ -102,6 +107,7 @@ public class NoticeController {
     }
 
     @GetMapping("/search")
+    @ApiOperation(value = "공지사항을 조건에 맞게 조회한다.", response = NoticeDto.class)
     public ResponseEntity<Message> search(@RequestParam Map<String, String> map) {
         try {
             List<NoticeDto> noticeList = noticeService.search(map);
@@ -127,6 +133,7 @@ public class NoticeController {
     }
 
     @GetMapping("/list")
+    @ApiOperation(value = "공지사항 전체를 조회한다.", response = NoticeDto.class)
     public ResponseEntity<Message> searchAll() {
         try {
             List<NoticeDto> noticeList = noticeService.searchAll();
@@ -152,6 +159,7 @@ public class NoticeController {
     }
 
     @GetMapping("/{notice-no}")
+    @ApiOperation(value = "공지사항의 세부 정보를 조회한다.", response = NoticeDto.class)
     public ResponseEntity<Message> searchByNo(@PathVariable("notice-no") int noticeNo) {
         try {
             NoticeDto notice = noticeService.searchByNo(noticeNo);

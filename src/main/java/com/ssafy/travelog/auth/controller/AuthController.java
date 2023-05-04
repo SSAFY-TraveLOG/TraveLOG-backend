@@ -1,9 +1,11 @@
 package com.ssafy.travelog.auth.controller;
 
+import com.ssafy.travelog.notice.dto.NoticeDto;
 import com.ssafy.travelog.user.dto.UserDto;
 import com.ssafy.travelog.auth.service.AuthService;
 import com.ssafy.travelog.util.Message;
 import com.ssafy.travelog.util.StatusEnum;
+import io.swagger.annotations.ApiOperation;
 import org.apache.catalina.User;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
-//@MapperScan(basePackages = {"com.ssafy.travelog.auth.dao"})
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 public class AuthController {
 
     private AuthService authService;
@@ -29,6 +31,7 @@ public class AuthController {
     }
 
     @PostMapping("/join")
+    @ApiOperation(value = "회원가입을 한다.", response = UserDto.class)
     public ResponseEntity<Message> join(@RequestBody Map<String, String> map){
 
         try{
@@ -65,6 +68,7 @@ public class AuthController {
     }
 
     @PostMapping("/check")
+    @ApiOperation(value = "로그인을 한다.", response = UserDto.class)
     public ResponseEntity<Message> login(@RequestBody Map<String, String> map){
 
         try{
@@ -93,6 +97,7 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
+    @ApiOperation(value = "로그아웃을 한다.", response = UserDto.class)
     public ResponseEntity<Message> logout(@RequestBody Map<String, String> map){
 
         try{
@@ -121,6 +126,7 @@ public class AuthController {
     }
 
     @PostMapping("/check/id")
+    @ApiOperation(value = "아이디 중복체크를 한다.", response = UserDto.class)
     public ResponseEntity<Message> checkId(@RequestBody Map<String, String> map){
 
         try{
@@ -150,6 +156,7 @@ public class AuthController {
 
     
     @PostMapping("/check/email")
+    @ApiOperation(value = "이메일 중복체크를 한다.", response = UserDto.class)
     public ResponseEntity<Message> checkEmail(@RequestBody Map<String, String> map){
 
         try{
