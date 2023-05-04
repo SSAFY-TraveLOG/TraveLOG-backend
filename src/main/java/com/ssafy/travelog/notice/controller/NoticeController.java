@@ -104,7 +104,6 @@ public class NoticeController {
     @GetMapping("/search")
     public ResponseEntity<Message> search(@RequestParam Map<String, String> map) {
         try {
-            System.out.println(map);
             List<NoticeDto> noticeList = noticeService.search(map);
 
             if (noticeList != null) {
