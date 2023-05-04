@@ -1,6 +1,6 @@
 package com.ssafy.travelog.auth.controller;
 
-import com.ssafy.travelog.auth.dto.UserDto;
+import com.ssafy.travelog.user.dto.UserDto;
 import com.ssafy.travelog.auth.service.AuthService;
 import com.ssafy.travelog.util.Message;
 import com.ssafy.travelog.util.StatusEnum;
