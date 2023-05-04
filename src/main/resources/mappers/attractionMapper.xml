@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.travelog.attraction.dao.AttractionDao">
+
+    <select id="searchByCondition" parameterType="map" resultType="AttractionDto">
+        SELECT table1.content_id as contentId,
+        table1.content_type_id as contentTypeId,
+        table1.title,
+        table1.addr1,
+        table1.addr2,
+        table1.first_image as firstImage,
+        table1.readcount,
+        table1.latitude,
+        table1.longitude,
+        table1.mlevel,
+        table2.cnt as attractionLike
+        FROM attractionInfo AS table1
+        LEFT JOIN (SELECT content_id, count(content_id) AS cnt
+        FROM attractionLike
+        GROUP BY content_id) AS table2
+        ON table1.content_id = table2.content_id
+        WHERE 1=1
+        <if test="'sido-code'!=null">
+            AND table1.sido_code=#{sido-code}
+        </if>
+        <if test="'gugun-code'!=null">
+            AND table1.gugun_code=#{gugun-code}
+        </if>
+        <if test="content-type-id!=null">
+            AND table1.content_type_id=#{content-type-id}
+        </if>
+        ;
+    </select>
+
+    <select id="attrDescription" parameterType="int" resultType="AttractionDto">
+        SELECT table1.contentId,
+        table1.contentTypeId,
+        table1.title,
+        table1.addr1,
+        table1.addr2,
+        table1.zipcode,
+        table1.tel,
+        table1.firstImage,
+        table1.firstImage2,
+        table1.readcount,
+        table1.guguncode,
+        table1.sidocode,
+        table1.latitude,
+        table1.longitude,
+        table1.mlevel,
+        table1.attractionDescription,
+        table2.cnt as attractionLike
+        FROM (SELECT a.content_id as contentId,
+        a.content_type_id as contentTypeId,
+        a.title,
+        a.addr1,
+        a.addr2,
+        a.zipcode,
+        a.tel,
+        a.first_image as firstImage,
+        a.first_image2 as firstImage2,
+        a.readcount,
+        a.gugun_code as guguncode,
+        a.sido_code as sidocode,
+        a.latitude,
+        a.longitude,
+        a.mlevel,
+        b.attraction_description as attractionDescription
+        FROM attractionInfo AS a,
+        attractionDescription AS b
+        WHERE a.content_id = b.content_id) AS table1
+        LEFT JOIN (SELECT content_id, count(content_id) AS cnt
+        FROM attractionLike
+        GROUP BY content_id) AS table2
+        ON table1.contentId = table2.content_id
+        WHERE table1.contentId=#{content-id}
+        ;
+    </select>
+
+</mapper>
