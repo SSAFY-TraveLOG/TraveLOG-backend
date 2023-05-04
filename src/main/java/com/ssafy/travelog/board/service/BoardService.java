@@ -1,10 +1,14 @@
 package com.ssafy.travelog.board.service;
 
+import com.ssafy.travelog.board.dto.BoardDto;
+
 import java.sql.SQLException;
 import java.util.Map;
 
 public interface BoardService {
     int writeArticle(Map<String, String> map) throws SQLException;
+
+    BoardDto getArticle(Map<String, String> map) throws SQLException;
 
     int modifyArticle(Map<String, String> map) throws SQLException;
 

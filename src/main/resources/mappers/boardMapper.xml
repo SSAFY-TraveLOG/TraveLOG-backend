@@ -4,6 +4,17 @@
 
 <mapper namespace="com.ssafy.travelog.board.dao.BoardDao">
 
+    <resultMap type="com.ssafy.travelog.board.dto.BoardDto" id="articleInfo">
+        <result column="user_no" property="userNo"/>
+        <result column="user_name" property="userName"/>
+        <result column="article_no" property="articleNo"/>
+        <result column="subject" property="subject"/>
+        <result column="content" property="content" />
+        <result column="readcount" property="readCount" />
+        <result column="register_time" property="registerTime" />
+        <result column="modified_time" property="modifiedTime" />
+    </resultMap>
+
     <insert id="writeArticle" parameterType="map">
         insert into board (user_no, subject, content) value (#{userNo}, #{subject}, #{content});
     </insert>
@@ -15,6 +26,13 @@
             modified_time = now()
         where article_no = #{articleNo}
     </update>
+
+    <select id="getArticle" parameterType="map" resultMap="articleInfo">
+        select article_no, user.user_no,user_name, subject, content, readcount, register_time, modified_time
+        from board join user
+        on board.user_no = user.user_no
+        where article_no = #{articleNo};
+    </select>
 
     <update id="increaseReadCount" parameterType="map">
         update board set
