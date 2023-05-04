@@ -4,6 +4,8 @@ public class BoardDto {
     private int articleNo;
     private int userNo;
 
+    private String userName;
+
     private String subject;
 
     private String content;
