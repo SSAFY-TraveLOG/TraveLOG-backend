@@ -18,7 +18,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
-@MapperScan(basePackages = {"com.ssafy.travelog.auth.dao"})
+//@MapperScan(basePackages = {"com.ssafy.travelog.auth.dao"})
 public class AuthController {
 
     private AuthService authService;
