@@ -4,6 +4,7 @@ import com.ssafy.travelog.board.dto.BoardDto;
 import com.ssafy.travelog.board.service.BoardService;
 import com.ssafy.travelog.util.Message;
 import com.ssafy.travelog.util.StatusEnum;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ public class BoardController {
     }
 
     @PostMapping("/write")
+    @ApiOperation(value = "글을 작성한다.", response = BoardDto.class)
     public ResponseEntity<Message> writeArticle(@RequestBody Map<String, String> map){
         try {
             int ret = boardService.writeArticle(map);
@@ -52,6 +54,7 @@ public class BoardController {
     }
 
     @PostMapping("/view/{articleNo}")
+    @ApiOperation(value = "글의 제목과 내용을 가져온다.", response = BoardDto.class)
     public ResponseEntity<Message> getArticle(@PathVariable String articleNo){
         try {
             BoardDto ret = null;
@@ -79,6 +82,7 @@ public class BoardController {
     }
     
     @PatchMapping("/modify/{articleNo}")
+    @ApiOperation(value = "글의 제목과 내용을 수정한다.", response = BoardDto.class)
     public ResponseEntity<Message> modifyArticle(@PathVariable String articleNo, @RequestBody Map<String, String> map){
         try {
             map.put("articleNo", articleNo);
@@ -104,6 +108,7 @@ public class BoardController {
     }
 
     @DeleteMapping("/delete/{articleNo}")
+    @ApiOperation(value = "글을 삭제한다.", response = BoardDto.class)
     public ResponseEntity<Message> deleteArticle(@PathVariable String articleNo){
         try {
             Map<String, String> map = new HashMap<>();
@@ -130,6 +135,7 @@ public class BoardController {
     }
 
     @GetMapping("/search")
+    @ApiOperation(value = "검색 조건에 맞는 글 리스트를 리턴한다.", response = BoardDto.class)
     public ResponseEntity<Message> searchArticle(@RequestParam Map<String, String> map){
         try {
             List<BoardDto> articleList = boardService.search(map);
