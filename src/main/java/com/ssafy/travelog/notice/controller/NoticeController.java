@@ -151,6 +151,31 @@ public class NoticeController {
         }
     }
 
+    @GetMapping("/{notice-no}")
+    public ResponseEntity<Message> searchByNo(@PathVariable("notice-no") int noticeNo) {
+        try {
+            NoticeDto notice = noticeService.searchByNo(noticeNo);
+
+            if (notice != null) {
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(notice);
+
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return exceptionHandling(e);
+        }
+    }
+
     private ResponseEntity<Message> exceptionHandling(Exception e) {
         Message message = new Message();
         HttpHeaders headers = new HttpHeaders();

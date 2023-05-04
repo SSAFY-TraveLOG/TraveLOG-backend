@@ -50,4 +50,10 @@
         FROM notice;
     </select>
 
+    <select id="searchByNo" parameterType="int" resultMap="notice">
+        SELECT *
+        FROM notice
+        WHERE notice_no=#{noticeNo};
+    </select>
+
 </mapper>

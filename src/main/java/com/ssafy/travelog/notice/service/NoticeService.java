@@ -15,4 +15,6 @@ public interface NoticeService {
     List<NoticeDto> search(Map<String, String> map);
 
     List<NoticeDto> searchAll();
+
+    NoticeDto searchByNo(int noticeNo);
 }
