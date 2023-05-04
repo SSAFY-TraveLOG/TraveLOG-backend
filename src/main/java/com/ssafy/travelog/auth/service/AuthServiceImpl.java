@@ -1,7 +1,7 @@
 package com.ssafy.travelog.auth.service;
 
 import com.ssafy.travelog.auth.dao.AuthDao;
-import com.ssafy.travelog.auth.dto.UserDto;
+import com.ssafy.travelog.user.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

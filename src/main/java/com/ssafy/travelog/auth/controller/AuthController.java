@@ -1,6 +1,6 @@
 package com.ssafy.travelog.auth.controller;
 
-import com.ssafy.travelog.auth.dto.UserDto;
+import com.ssafy.travelog.user.dto.UserDto;
 import com.ssafy.travelog.auth.service.AuthService;
 import com.ssafy.travelog.util.Message;
 import com.ssafy.travelog.util.StatusEnum;
@@ -18,7 +18,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
-@MapperScan(basePackages = {"com.ssafy.travelog.auth.dao"})
+//@MapperScan(basePackages = {"com.ssafy.travelog.auth.dao"})
 public class AuthController {
 
     private AuthService authService;
