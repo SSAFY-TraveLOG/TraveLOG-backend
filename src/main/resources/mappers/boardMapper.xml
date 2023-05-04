@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ssafy.travelog.user.dao.BoardDao">
-    <insert id="writeArticle">
-        insert into board (user_no, subject, content) values (#{userNo}, #{subject}, #{content});
+<mapper namespace="com.ssafy.travelog.board.dao.BoardDao">
+    <insert id="writeArticle" parameterType="map">
+        insert into board (user_no, subject, content) value (#{userNo}, #{subject}, #{content});
     </insert>
 
 </mapper>
