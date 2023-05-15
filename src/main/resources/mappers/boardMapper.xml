@@ -53,7 +53,7 @@
                 where subject like concat('%', #{word}, '%');
             </if>
             <if test='key.equals("userName")'>
-                WHERE (select user_id from user where user.user_no = board.user_no) LIKE concat("%", #{word}, "%");
+                WHERE user_no in (select user_no from user where user_name LIKE concat("%", #{word}, "%"));
             </if>
             <if test='key.equals("content") || key == null'>
                 WHERE content LIKE concat("%", #{word}, "%");
