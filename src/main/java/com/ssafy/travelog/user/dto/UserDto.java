@@ -1,6 +1,22 @@
 package com.ssafy.travelog.user.dto;
 
-public class UserDto {
+import lombok.*;
+import org.apache.ibatis.mapping.FetchType;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Setter
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserDto implements UserDetails {
     private int id;
     private String userId;
     private String password;
@@ -8,6 +24,9 @@ public class UserDto {
     private String emailId;
     private String emailDomain;
     private int status;
+
+    @Builder.Default
+    private List<String> roles = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -21,12 +40,51 @@ public class UserDto {
         return userId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+
+        System.out.println("....."+this.roles.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList()));
+
+        roles.add(String.valueOf(new SimpleGrantedAuthority("auth")));
+
+        return this.roles.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
     }
 
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return userId;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public void setPassword(String password) {
@@ -64,4 +122,7 @@ public class UserDto {
     public void setStatus(int status) {
         this.status = status;
     }
+
+
+
 }

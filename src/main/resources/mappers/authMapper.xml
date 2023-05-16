@@ -7,6 +7,7 @@
     <resultMap type="com.ssafy.travelog.user.dto.UserDto" id="userInfo">
         <result column="user_no" property="id"/>
         <result column="user_id" property="userId"/>
+        <result column="user_password" property="password"/>
         <result column="user_name" property="userName"/>
         <result column="email_id" property="emailId"/>
         <result column="email_domain" property="emailDomain"/>
@@ -23,6 +24,12 @@
         select user_no, user_id,user_name,email_id,email_domain, user_state
         from user
         where user_id = #{userId} and user_password = #{password};
+    </select>
+
+    <select id="loadUserByUsername" parameterType="map" resultMap="userInfo">
+        select user_no, user_id,user_password,user_name,email_id,email_domain, user_state
+        from user
+        where user_id = #{userId};
     </select>
 
     <select id="checkId" resultType="int">
