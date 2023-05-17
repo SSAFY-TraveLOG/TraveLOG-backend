@@ -56,10 +56,9 @@ public class QnaBoardController {
 
     @PostMapping("/view/{articleNo}")
     @ApiOperation(value = "QnA 게시판의 특정 글 제목과 내용을 가져온다.", response = BoardDto.class)
-    public ResponseEntity<Message> getArticle(@PathVariable String articleNo){
+    public ResponseEntity<Message> getArticle(@PathVariable String articleNo, @RequestBody Map<String, String> map){
         try {
             QnaBoardDto ret = null;
-            Map<String, String> map = new HashMap<>();
             map.put("articleNo", articleNo);
             ret = boardService.getArticle(map);
             if (ret != null) {
@@ -68,12 +67,22 @@ public class QnaBoardController {
 
                 headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-                message.setStatus(StatusEnum.OK);
-                message.setCode(StatusEnum.OK);
-                message.setMessage("요청에 성공하였습니다.");
-                message.setData(ret);
+                if (ret.getSecret() == 0 || (ret.getSecret() == 1 &&
+                        (ret.getUserNo() == Integer.parseInt(map.get("userNo")) ||
+                         Integer.parseInt(map.get("userNo")) == 1))) {
+                    message.setStatus(StatusEnum.OK);
+                    message.setCode(StatusEnum.OK);
+                    message.setMessage("요청에 성공하였습니다.");
+                    message.setData(ret);
 
-                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+                    return new ResponseEntity<>(message, headers, HttpStatus.OK);
+                } else {
+                    message.setStatus(StatusEnum.NO_CONTENT);
+                    message.setCode(StatusEnum.NO_CONTENT);
+                    message.setMessage("열람 권한이 없는 게시글입니다.");
+
+                    return new ResponseEntity<>(message, headers, HttpStatus.OK);
+                }
             } else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
