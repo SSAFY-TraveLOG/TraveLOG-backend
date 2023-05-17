@@ -26,7 +26,7 @@
     </insert>
 
     <select id="getArticle" parameterType="map" resultMap="articleInfo">
-        select article_no, user.user_no, user_name, subject, content, readcount, register_time, modified_time, secret
+        select article_no, user.user_no, user.user_name, subject, content, readcount, register_time, modified_time, secret
         from qnaBoard join user
                         on qnaBoard.user_no = user.user_no
         where article_no = #{articleNo};
@@ -53,5 +53,22 @@
         delete from qnaBoard
         where article_no = #{articleNo};
     </delete>
+
+    <select id="searchArticle" parameterType="map" resultMap="articleInfo">
+        select article_no, user.user_no, user.user_name, subject, content, readcount, register_time, modified_time, secret
+        from qnaBoard join user
+                      on qnaBoard.user_no = user.user_no
+        <if test="word != null">
+            <if test='key.equals("subject")'>
+                where subject like concat('%', #{value}, '%');
+            </if>
+            <if test='key.equals("userName")'>
+                WHERE (select user_name from user where user.user_no = qnaBoard.user_no) LIKE concat("%", #{value}, "%");
+            </if>
+            <if test='key.equals("content") || key == null'>
+                WHERE content LIKE concat("%", #{value}, "%");
+            </if>
+        </if>
+    </select>
 
 </mapper>

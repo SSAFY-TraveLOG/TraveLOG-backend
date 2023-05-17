@@ -40,4 +40,9 @@ public class QnaBoardServiceImpl implements QnaBoardService {
     public int deleteArticle(Map<String, String> map) throws SQLException {
         return boardDao.deleteArticle(map);
     }
+
+    @Override
+    public List<QnaBoardDto> search(Map<String, String> map) throws SQLException {
+        return boardDao.searchArticle(map);
+    }
 }

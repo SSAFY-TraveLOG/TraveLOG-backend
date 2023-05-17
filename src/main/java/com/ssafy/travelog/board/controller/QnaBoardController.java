@@ -1,6 +1,5 @@
 package com.ssafy.travelog.board.controller;
 
-import com.ssafy.travelog.board.dto.BoardDto;
 import com.ssafy.travelog.board.dto.QnaBoardDto;
 import com.ssafy.travelog.board.service.QnaBoardService;
 import com.ssafy.travelog.util.Message;
@@ -55,7 +54,7 @@ public class QnaBoardController {
     }
 
     @PostMapping("/view/{articleNo}")
-    @ApiOperation(value = "QnA 게시판의 특정 글 제목과 내용을 가져온다.", response = BoardDto.class)
+    @ApiOperation(value = "QnA 게시판의 특정 글 제목과 내용을 가져온다.", response = QnaBoardDto.class)
     public ResponseEntity<Message> getArticle(@PathVariable String articleNo, @RequestBody Map<String, String> map){
         try {
             QnaBoardDto ret = null;
@@ -92,7 +91,7 @@ public class QnaBoardController {
     }
 
     @PatchMapping("/modify/{articleNo}")
-    @ApiOperation(value = "글의 제목과 내용을 수정한다.", response = BoardDto.class)
+    @ApiOperation(value = "글의 제목과 내용을 수정한다.", response = QnaBoardDto.class)
     public ResponseEntity<Message> modifyArticle(@PathVariable String articleNo, @RequestBody Map<String, String> map){
         try {
             map.put("articleNo", articleNo);
@@ -118,7 +117,7 @@ public class QnaBoardController {
     }
 
     @DeleteMapping("/delete/{articleNo}")
-    @ApiOperation(value = "글을 삭제한다.", response = BoardDto.class)
+    @ApiOperation(value = "글을 삭제한다.", response = QnaBoardDto.class)
     public ResponseEntity<Message> deleteArticle(@PathVariable String articleNo){
         try {
             Map<String, String> map = new HashMap<>();
@@ -134,6 +133,54 @@ public class QnaBoardController {
                 message.setCode(StatusEnum.OK);
                 message.setMessage("요청에 성공하였습니다.");
                 message.setData(ret);
+
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e){
+            return exceptionHandling(e);
+        }
+    }
+
+    @GetMapping("/search")
+    @ApiOperation(value = "검색 조건에 맞는 글 리스트를 리턴한다.", response = QnaBoardDto.class)
+    public ResponseEntity<Message> searchArticle(@RequestParam Map<String, String> map, @RequestBody Map<String, String> userInfo){
+        try {
+            List<QnaBoardDto> articleList = boardService.search(map);
+
+            if (articleList != null) {
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(articleList);
+
+                if (Integer.parseInt(userInfo.get("userNo")) == 1)
+                    return new ResponseEntity<>(message, headers, HttpStatus.OK);
+
+                if (map.get("key") == null) {
+                    for (int i = 0; i < articleList.size(); i++) {
+                        if (articleList.get(i).getSecret() != 0 &&
+                                Integer.parseInt(userInfo.get("userNo")) != articleList.get(i).getUserNo()) {
+                            articleList.get(i).setUserNo(-1);
+                            articleList.get(i).setUserName("***");
+                            articleList.get(i).setSubject("비밀글입니다.");
+                            articleList.get(i).setContent("비밀글입니다.");
+                        }
+                    }
+                } else {
+                    for (int i = articleList.size() - 1; i >= 0 ; i--) {
+                        if (articleList.get(i).getSecret() != 0 &&
+                                Integer.parseInt(userInfo.get("userNo")) != articleList.get(i).getUserNo()) {
+                            articleList.remove(i);
+                        }
+                    }
+                }
 
                 return new ResponseEntity<>(message, headers, HttpStatus.OK);
             } else {

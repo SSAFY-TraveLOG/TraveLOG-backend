@@ -18,4 +18,6 @@ public interface QnaBoardDao {
     int modifyArticle(Map<String, String> map) throws SQLException;
 
     int deleteArticle(Map<String, String> map) throws SQLException;
+
+    List<QnaBoardDto> searchArticle(Map<String, String> map) throws SQLException;
 }
