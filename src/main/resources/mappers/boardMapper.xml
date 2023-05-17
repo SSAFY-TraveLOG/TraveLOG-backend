@@ -46,17 +46,18 @@
     </delete>
 
     <select id="searchArticle" parameterType="map" resultMap="articleInfo">
-        select *
-        from board
-        <if test="word != null">
+        select article_no, user.user_no, user.user_name, subject, content, readcount, register_time, modified_time
+        from board join user
+        on board.user_no = user.user_no
+        <if test="key != null">
             <if test='key.equals("subject")'>
-                where subject like concat('%', #{word}, '%');
+                where subject like concat('%', #{value}, '%');
             </if>
             <if test='key.equals("userName")'>
-                WHERE (select user_id from user where user.user_no = board.user_no) LIKE concat("%", #{word}, "%");
+                WHERE (select user_name from user where user.user_no = board.user_no) LIKE concat("%", #{value}, "%");
             </if>
-            <if test='key.equals("content") || key == null'>
-                WHERE content LIKE concat("%", #{word}, "%");
+            <if test='key.equals("content")'>
+                WHERE content LIKE concat("%", #{value}, "%");
             </if>
         </if>
     </select>
