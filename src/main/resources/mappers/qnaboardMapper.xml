@@ -49,4 +49,9 @@
         where article_no = #{articleNo}
     </update>
 
+    <delete id="deleteArticle" parameterType="map">
+        delete from qnaBoard
+        where article_no = #{articleNo};
+    </delete>
+
 </mapper>

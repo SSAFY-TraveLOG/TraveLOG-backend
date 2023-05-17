@@ -12,4 +12,6 @@ public interface QnaBoardService {
     QnaBoardDto getArticle(Map<String, String> map) throws SQLException;
 
     int modifyArticle(Map<String, String> map) throws SQLException;
+
+    int deleteArticle(Map<String, String> map) throws SQLException;
 }

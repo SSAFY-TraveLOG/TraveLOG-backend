@@ -120,4 +120,31 @@ public class QnaBoardController {
         message.setMessage("요청에 실패하였습니다.");
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
+
+    @DeleteMapping("/delete/{articleNo}")
+    @ApiOperation(value = "글을 삭제한다.", response = BoardDto.class)
+    public ResponseEntity<Message> deleteArticle(@PathVariable String articleNo){
+        try {
+            Map<String, String> map = new HashMap<>();
+            map.put("articleNo", articleNo);
+            int ret = boardService.deleteArticle(map);
+            if (ret == 1) {
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(ret);
+
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e){
+            return exceptionHandling(e);
+        }
+    }
 }
