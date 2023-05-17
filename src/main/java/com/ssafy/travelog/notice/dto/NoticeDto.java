@@ -1,7 +1,5 @@
 package com.ssafy.travelog.notice.dto;
 
-import jdk.nashorn.internal.objects.annotations.Getter;
-
 public class NoticeDto {
     private int noticeNo;
     private String subject;
