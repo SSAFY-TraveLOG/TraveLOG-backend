@@ -32,4 +32,15 @@
         where article_no = #{articleNo};
     </select>
 
+    <update id="modifyArticle" parameterType="map">
+        update qnaBoard set
+                         subject = #{subject},
+                         content = #{content},
+                         modified_time = now()
+                         <if test="secret != null">
+                             , secret = #{secret}
+                         </if>
+        where article_no = #{articleNo}
+    </update>
+
 </mapper>

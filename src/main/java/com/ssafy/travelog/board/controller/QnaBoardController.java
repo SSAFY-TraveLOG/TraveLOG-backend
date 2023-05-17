@@ -82,6 +82,31 @@ public class QnaBoardController {
         }
     }
 
+    @PatchMapping("/modify/{articleNo}")
+    @ApiOperation(value = "글의 제목과 내용을 수정한다.", response = BoardDto.class)
+    public ResponseEntity<Message> modifyArticle(@PathVariable String articleNo, @RequestBody Map<String, String> map){
+        try {
+            map.put("articleNo", articleNo);
+            int ret = boardService.modifyArticle(map);
+            if (ret == 1) {
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(ret);
+
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e){
+            return exceptionHandling(e);
+        }
+    }
 
     private ResponseEntity<Message> exceptionHandling(Exception e) {
         e.printStackTrace();
