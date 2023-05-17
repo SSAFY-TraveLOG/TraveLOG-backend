@@ -19,7 +19,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/qna")
-@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST})
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PATCH, RequestMethod.DELETE})
 public class QnaBoardController {
     private QnaBoardService boardService;
 
