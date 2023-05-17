@@ -32,6 +32,12 @@
         where article_no = #{articleNo};
     </select>
 
+    <update id="increaseReadCount" parameterType="map">
+        update qnaBoard set
+            readcount = readcount+1
+        where article_no = #{articleNo}
+    </update>
+
     <update id="modifyArticle" parameterType="map">
         update qnaBoard set
                          subject = #{subject},

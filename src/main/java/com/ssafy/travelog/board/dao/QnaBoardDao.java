@@ -13,5 +13,7 @@ public interface QnaBoardDao {
 
     QnaBoardDto getArticle(Map<String, String> map) throws SQLException;
 
+    int increaseReadCount(Map<String, String> map) throws SQLException;
+
     int modifyArticle(Map<String, String> map) throws SQLException;
 }
