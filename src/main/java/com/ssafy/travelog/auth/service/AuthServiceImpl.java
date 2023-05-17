@@ -56,9 +56,11 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
 
     @Transactional
     @Override
-    public TokenInfo getToken(String memberId, String password) {
+    public TokenInfo getToken(Map<String, String> map) throws SQLException  {
         // 1. Login ID/PW 를 기반으로 Authentication 객체 생성
         // 이때 authentication 는 인증 여부를 확인하는 authenticated 값이 false
+        String memberId = map.get("userId");
+        String password = map.get("password");
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberId, password);
 
         // 2. 실제 검증 (사용자 비밀번호 체크)이 이루어지는 부분
@@ -95,19 +97,12 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
         try {
             ret = authDao.loadUserByUsername(map);
             ret2 = createUserDetails(ret);
-
-            System.out.println("loadUserByUsername : "+ret2.toString());
         } catch (SQLException e) {
 
             throw new RuntimeException(e);
         }
 
-
         return ret2;
-
-//        return memberRepository.findByMemberId(username)
-//                .map(this::createUserDetails)
-//                .orElseThrow(() -> new UsernameNotFoundException("해당하는 유저를 찾을 수 없습니다."));
     }
 
 }

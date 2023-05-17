@@ -1,5 +1,6 @@
 package com.ssafy.travelog.user.dto;
 
+import com.ssafy.travelog.util.jwt.TokenInfo;
 import lombok.*;
 import org.apache.ibatis.mapping.FetchType;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,6 +25,7 @@ public class UserDto implements UserDetails {
     private String emailId;
     private String emailDomain;
     private int status;
+    private TokenInfo token;
 
     @Builder.Default
     private List<String> roles = new ArrayList<>();

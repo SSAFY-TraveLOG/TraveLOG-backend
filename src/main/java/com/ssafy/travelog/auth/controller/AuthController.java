@@ -76,6 +76,7 @@ public class AuthController {
             UserDto ret = authService.login(map);
 
             if(ret != null) {
+                ret.setToken(authService.getToken(map));
                 Message message = new Message();
                 HttpHeaders headers = new HttpHeaders();
 
@@ -164,36 +165,6 @@ public class AuthController {
             int ret = authService.checkEmail(map);
 
             if(ret == 0) {
-                Message message = new Message();
-                HttpHeaders headers = new HttpHeaders();
-
-                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
-                message.setStatus(StatusEnum.OK);
-                message.setCode(StatusEnum.OK);
-                message.setMessage("요청에 성공하였습니다.");
-                message.setData(ret);
-
-                return new ResponseEntity<>(message, headers, HttpStatus.OK);
-            }
-            else {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-        }catch (Exception e){
-            return exceptionHandling(e);
-        }
-
-    }
-
-    @PostMapping("/test/check")
-    @ApiOperation(value = "jwt 로그인 테스트중", response = UserDto.class)
-    public ResponseEntity<Message> testLogin(@RequestBody Map<String, String> map){
-
-        try{
-
-            TokenInfo ret = authService.getToken(map.get("userId"), map.get("password"));
-
-            if(ret != null) {
                 Message message = new Message();
                 HttpHeaders headers = new HttpHeaders();
 

@@ -35,10 +35,6 @@ public class TokenProvider {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        System.out.println("generateToken : "+authentication);
-        System.out.println("generateToken : "+authentication.getAuthorities());
-        System.out.println("generateToken : "+authorities);
-
         long now = (new Date()).getTime();
         // Access Token 생성
         Date accessTokenExpiresIn = new Date(now + 86400000);
@@ -64,18 +60,12 @@ public class TokenProvider {
 
     // JWT 토큰을 복호화하여 토큰에 들어있는 정보를 꺼내는 메서드
     public Authentication getAuthentication(String accessToken) {
-
-        System.out.println(":::::1"+accessToken);
-
         // 토큰 복호화
         Claims claims = parseClaims(accessToken);
 
         if (claims.get("auth") == null) {
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
         }
-        System.out.println(":::::2"+claims);
-        System.out.println(":::::3"+claims.get("auth"));
-        System.out.println(":::::4"+claims.get("auth").toString());
 
         // 클레임에서 권한 정보 가져오기
         Collection<? extends GrantedAuthority> authorities =

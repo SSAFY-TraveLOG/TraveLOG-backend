@@ -13,7 +13,7 @@ public interface AuthService {
     int checkId(Map<String, String> map) throws SQLException;
     int checkEmail(Map<String, String> map) throws SQLException;
 
-    TokenInfo getToken(String memberId, String password);
+    TokenInfo getToken(Map<String, String> map) throws SQLException ;
 
 //    UserDetails createUserDetails(UserDto user);
 }
