@@ -23,4 +23,10 @@ public class QnaBoardServiceImpl implements QnaBoardService {
     public int writeArticle(Map<String, String> map) throws SQLException {
         return boardDao.writeArticle(map);
     }
+
+    @Override
+    @Transactional
+    public QnaBoardDto getArticle(Map<String, String> map) throws SQLException {
+        return boardDao.getArticle(map);
+    }
 }

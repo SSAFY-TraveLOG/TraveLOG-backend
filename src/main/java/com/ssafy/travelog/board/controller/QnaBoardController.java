@@ -54,6 +54,34 @@ public class QnaBoardController {
         }
     }
 
+    @PostMapping("/view/{articleNo}")
+    @ApiOperation(value = "QnA 게시판의 특정 글 제목과 내용을 가져온다.", response = BoardDto.class)
+    public ResponseEntity<Message> getArticle(@PathVariable String articleNo){
+        try {
+            QnaBoardDto ret = null;
+            Map<String, String> map = new HashMap<>();
+            map.put("articleNo", articleNo);
+            ret = boardService.getArticle(map);
+            if (ret != null) {
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(ret);
+
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e){
+            return exceptionHandling(e);
+        }
+    }
+
 
     private ResponseEntity<Message> exceptionHandling(Exception e) {
         e.printStackTrace();

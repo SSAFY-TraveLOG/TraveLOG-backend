@@ -25,4 +25,11 @@
         </if>
     </insert>
 
+    <select id="getArticle" parameterType="map" resultMap="articleInfo">
+        select article_no, user.user_no, user_name, subject, content, readcount, register_time, modified_time, secret
+        from qnaBoard join user
+                        on qnaBoard.user_no = user.user_no
+        where article_no = #{articleNo};
+    </select>
+
 </mapper>

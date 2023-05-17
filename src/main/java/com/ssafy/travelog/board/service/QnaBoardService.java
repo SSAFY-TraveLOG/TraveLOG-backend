@@ -8,4 +8,6 @@ import java.util.Map;
 
 public interface QnaBoardService {
     int writeArticle(Map<String, String> map) throws SQLException;
+
+    QnaBoardDto getArticle(Map<String, String> map) throws SQLException;
 }

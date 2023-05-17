@@ -10,4 +10,6 @@ import java.util.Map;
 @Mapper
 public interface QnaBoardDao {
     int writeArticle(Map<String,String> map) throws SQLException;
+
+    QnaBoardDto getArticle(Map<String, String> map) throws SQLException;
 }
