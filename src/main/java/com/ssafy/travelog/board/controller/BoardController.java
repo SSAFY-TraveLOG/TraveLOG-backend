@@ -18,7 +18,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/board")
-@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST})
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE, RequestMethod.PATCH})
 public class BoardController {
     private BoardService boardService;
 
