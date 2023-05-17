@@ -5,6 +5,7 @@ import com.ssafy.travelog.user.dto.UserDto;
 import com.ssafy.travelog.auth.service.AuthService;
 import com.ssafy.travelog.util.Message;
 import com.ssafy.travelog.util.StatusEnum;
+import com.ssafy.travelog.util.jwt.TokenInfo;
 import io.swagger.annotations.ApiOperation;
 import org.apache.catalina.User;
 import org.mybatis.spring.annotation.MapperScan;
@@ -75,6 +76,7 @@ public class AuthController {
             UserDto ret = authService.login(map);
 
             if(ret != null) {
+                ret.setToken(authService.getToken(map));
                 Message message = new Message();
                 HttpHeaders headers = new HttpHeaders();
 
