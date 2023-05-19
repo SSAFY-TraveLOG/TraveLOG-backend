@@ -58,15 +58,17 @@
         select article_no, user.user_no, user.user_name, subject, content, readcount, register_time, modified_time, secret
         from qnaBoard join user
                       on qnaBoard.user_no = user.user_no
+        where user.user_name != 'INACTIVE'
         <if test="key != null">
+            and
             <if test='key.equals("subject")'>
-                where subject like concat('%', #{value}, '%');
+                subject like concat('%', #{value}, '%');
             </if>
             <if test='key.equals("userName")'>
-                WHERE (select user_name from user where user.user_no = qnaBoard.user_no) LIKE concat("%", #{value}, "%");
+                (select user_name from user where user.user_no = qnaBoard.user_no) LIKE concat("%", #{value}, "%");
             </if>
             <if test='key.equals("content")'>
-                WHERE content LIKE concat("%", #{value}, "%");
+                content LIKE concat("%", #{value}, "%");
             </if>
         </if>
     </select>
