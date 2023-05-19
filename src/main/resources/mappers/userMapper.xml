@@ -10,7 +10,7 @@
             <if test="userName != null">user_name = #{userName},</if>
             <if test="password != null">user_password = #{password}</if>
         </set>
-        where user_no = #{id}
+        where user_no = #{userNo}
     </update>
 
     <update id="deleteUser" parameterType="map">
@@ -21,7 +21,7 @@
             email_id = "INACTIVE",
             email_domain = "INACTIVE",
             user_state = 2
-        where user_no = #{id}
+        where user_no = #{userNo}
     </update>
 
 </mapper>
