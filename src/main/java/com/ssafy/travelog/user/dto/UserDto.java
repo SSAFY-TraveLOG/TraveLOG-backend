@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto implements UserDetails {
-    private int userNo;
+    private int id;
     private String userId;
     private String password;
     private String userName;
@@ -30,12 +30,12 @@ public class UserDto implements UserDetails {
     @Builder.Default
     private List<String> roles = new ArrayList<>();
 
-    public int getUserNo() {
-        return userNo;
+    public int getId() {
+        return id;
     }
 
-    public void setUserNo(int userNo) {
-        this.userNo = userNo;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUserId() {
