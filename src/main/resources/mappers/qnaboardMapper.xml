@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.travelog.board.dao.QnaBoardDao">
+
+    <resultMap type="com.ssafy.travelog.board.dto.QnaBoardDto" id="articleInfo">
+        <result column="user_no" property="userNo"/>
+        <result column="user_name" property="userName"/>
+        <result column="article_no" property="articleNo"/>
+        <result column="subject" property="subject"/>
+        <result column="content" property="content" />
+        <result column="readcount" property="readCount" />
+        <result column="register_time" property="registerTime" />
+        <result column="modified_time" property="modifiedTime" />
+        <result column="secret" property="secret" />
+    </resultMap>
+
+    <insert id="writeArticle" parameterType="map">
+        <if test="secret == null">
+        insert into qnaBoard (user_no, subject, content) value (#{userNo}, #{subject}, #{content});
+        </if>
+        <if test="secret != null">
+            insert into qnaBoard (user_no, subject, content, secret) value (#{userNo}, #{subject}, #{content}, #{secret});
+        </if>
+    </insert>
+
+    <select id="getArticle" parameterType="map" resultMap="articleInfo">
+        select article_no, user.user_no, user.user_name, subject, content, readcount, register_time, modified_time, secret
+        from qnaBoard join user
+                        on qnaBoard.user_no = user.user_no
+        where article_no = #{articleNo};
+    </select>
+
+    <update id="increaseReadCount" parameterType="map">
+        update qnaBoard set
+            readcount = readcount+1
+        where article_no = #{articleNo}
+    </update>
+
+    <update id="modifyArticle" parameterType="map">
+        update qnaBoard set
+                         subject = #{subject},
+                         content = #{content},
+                         modified_time = now()
+                         <if test="secret != null">
+                             , secret = #{secret}
+                         </if>
+        where article_no = #{articleNo}
+    </update>
+
+    <delete id="deleteArticle" parameterType="map">
+        delete from qnaBoard
+        where article_no = #{articleNo};
+    </delete>
+
+    <select id="searchArticle" parameterType="map" resultMap="articleInfo">
+        select article_no, user.user_no, user.user_name, subject, content, readcount, register_time, modified_time, secret
+        from qnaBoard join user
+                      on qnaBoard.user_no = user.user_no
+        where user.user_name != 'INACTIVE'
+        <if test="key != null">
+            and
+            <if test='key.equals("subject")'>
+                subject like concat('%', #{value}, '%');
+            </if>
+            <if test='key.equals("userName")'>
+                (select user_name from user where user.user_no = qnaBoard.user_no) LIKE concat("%", #{value}, "%");
+            </if>
+            <if test='key.equals("content")'>
+                content LIKE concat("%", #{value}, "%");
+            </if>
+        </if>
+    </select>
+
+</mapper>
