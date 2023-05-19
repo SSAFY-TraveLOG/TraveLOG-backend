@@ -1,6 +1,7 @@
 package com.ssafy.travelog.attraction.controller;
 
 import com.ssafy.travelog.attraction.dto.AttractionDto;
+import com.ssafy.travelog.attraction.dto.GugunDto;
 import com.ssafy.travelog.attraction.service.AttractionService;
 import com.ssafy.travelog.util.Message;
 import com.ssafy.travelog.util.StatusEnum;
@@ -71,6 +72,34 @@ public class AttractionController {
                 message.setCode(StatusEnum.OK);
                 message.setMessage("요청에 성공하였습니다.");
                 message.setData(attractions);
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                message.setStatus(StatusEnum.NO_CONTENT);
+                message.setCode(StatusEnum.NO_CONTENT);
+                message.setMessage("요청에 실패하였습니다.");
+                message.setData(null);
+                return new ResponseEntity<Message>(message, headers, HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return exceptionHandling(e);
+        }
+    }
+
+    @GetMapping("/sido/{sido-code}")
+    @ApiOperation(value = "시도 코드에 맞는 구군 코드를 검색한다.", response = AttractionDto.class)
+    public ResponseEntity<Message> getGugun(@PathVariable("sido-code") int sidoCode) {
+        try {
+            List<GugunDto> guguns = service.searchGugunBySido(sidoCode);
+            Message message = new Message();
+            HttpHeaders headers = new HttpHeaders();
+
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+            if (guguns != null) {
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(guguns);
                 return new ResponseEntity<>(message, headers, HttpStatus.OK);
             } else {
                 message.setStatus(StatusEnum.NO_CONTENT);
