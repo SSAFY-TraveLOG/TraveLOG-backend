@@ -143,7 +143,7 @@ public class QnaBoardController {
         }
     }
 
-    @GetMapping("/search")
+    @PostMapping("/search")
     @ApiOperation(value = "검색 조건에 맞는 글 리스트를 리턴한다.", response = QnaBoardDto.class)
     public ResponseEntity<Message> searchArticle(@RequestParam Map<String, String> map, @RequestBody Map<String, String> userInfo){
         try {

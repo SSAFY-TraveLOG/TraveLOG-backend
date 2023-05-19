@@ -5,7 +5,7 @@
 <mapper namespace="com.ssafy.travelog.auth.dao.AuthDao">
 
     <resultMap type="com.ssafy.travelog.user.dto.UserDto" id="userInfo">
-        <result column="user_no" property="id"/>
+        <result column="user_no" property="userNo"/>
         <result column="user_id" property="userId"/>
         <result column="user_password" property="password"/>
         <result column="user_name" property="userName"/>
