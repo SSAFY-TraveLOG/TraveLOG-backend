@@ -62,15 +62,16 @@
         <if test="key != null">
             and
             <if test='key.equals("subject")'>
-                subject like concat('%', #{value}, '%');
+                subject like concat('%', #{value}, '%')
             </if>
             <if test='key.equals("userName")'>
-                (select user_name from user where user.user_no = qnaBoard.user_no) LIKE concat("%", #{value}, "%");
+                (select user_name from user where user.user_no = qnaBoard.user_no) LIKE concat("%", #{value}, "%")
             </if>
             <if test='key.equals("content")'>
-                content LIKE concat("%", #{value}, "%");
+                content LIKE concat("%", #{value}, "%")
             </if>
         </if>
+        order by article_no desc;
     </select>
 
 </mapper>
