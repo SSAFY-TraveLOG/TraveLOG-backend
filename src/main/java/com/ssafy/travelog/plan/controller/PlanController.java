@@ -55,7 +55,7 @@ public class PlanController {
     }
 
     @DeleteMapping("/{plan-no}")
-    @ApiOperation(value = "입력받은 사용자의 모든 여행계획을 불러온다.", response = TravelDto.class)
+    @ApiOperation(value = "plan, participant, route 테이블에서 입력받은 여행계획의 데이터를 삭제한다.", response = TravelDto.class)
     public ResponseEntity<Message> deletePlan(@PathVariable("plan-no") int planNo) {
         try {
             int ret = planService.deletePlan(planNo);
