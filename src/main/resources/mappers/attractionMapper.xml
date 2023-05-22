@@ -79,4 +79,11 @@
         ;
     </select>
 
+    <select id="searchGugunBySido" parameterType="int" resultType="GugunDto">
+        SELECT gugun_code as gugunCode,
+        sido_code as sidoCode,
+        gugun_name as  gugunName
+        FROM gugun
+        WHERE sido_code = #{sidoCode};
+    </select>
 </mapper>
