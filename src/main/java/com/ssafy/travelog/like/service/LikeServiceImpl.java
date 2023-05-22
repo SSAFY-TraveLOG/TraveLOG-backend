@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class LikeServiceImpl implements LikeService {
@@ -57,5 +58,11 @@ public class LikeServiceImpl implements LikeService {
     public Long getAttractionLikeNum(String attractionNo) {
         SetOperations<String, Object> setOperations = redisTemplate.opsForSet();
         return setOperations.size("like:attraction:" + attractionNo);
+    }
+
+    @Override
+    public Set getLikeAttractionList(String userNo) {
+        SetOperations<String, Object> setOperations = redisTemplate.opsForSet();
+        return setOperations.members("like:user_attraction:" + userNo);
     }
 }

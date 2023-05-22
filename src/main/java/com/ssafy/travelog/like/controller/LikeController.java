@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/like")
@@ -77,6 +78,30 @@ public class LikeController {
     public ResponseEntity<Message> getAttractionLikeNum(@PathVariable String attractionNo) {
         try {
             Long ret = likeService.getAttractionLikeNum(attractionNo);
+
+            if (ret != null) {
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(ret);
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return exceptionHandling(e);
+        }
+    }
+
+    @GetMapping("/user/attraction/{userNo}")
+    public ResponseEntity<Message> getLikeAttractionList(@PathVariable String userNo) {
+        try {
+            Set ret = likeService.getLikeAttractionList(userNo);
 
             if (ret != null) {
                 Message message = new Message();
