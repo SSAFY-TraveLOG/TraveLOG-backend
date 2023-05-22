@@ -8,7 +8,7 @@ public class RouteDto {
     private int routeId;
     private int planNo;
     private int contentId;
-    private int travelOrder;
+    private int planOrder;
     private String visitDate;
     private String description;
     private String title;

@@ -1,6 +1,7 @@
 package com.ssafy.travelog.plan.service;
 
 import com.ssafy.travelog.plan.dao.PlanDao;
+import com.ssafy.travelog.plan.dto.PlanDto;
 import com.ssafy.travelog.plan.dto.TravelDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,5 +26,13 @@ public class PlanServiceImpl implements PlanService {
     @Override
     public int deletePlan(int planNo) throws SQLException {
         return planDao.deletePlanByPlanNo(planNo) + planDao.deleteParticipantsByPlanNo(planNo) + planDao.deleteRoutesByPlanNo(planNo);
+    }
+
+    @Override
+    public PlanDto getPlan(int planNo) throws SQLException {
+        PlanDto plan = planDao.getPlan(planNo);
+        plan.setParticipants(planDao.getParticipants(planNo));
+        plan.setRoutes(planDao.getRoutes(planNo));
+        return plan;
     }
 }

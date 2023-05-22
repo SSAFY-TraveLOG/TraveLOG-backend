@@ -14,7 +14,7 @@ public class PlanDto {
     private String endDate;
     private String sidoName;
     private int sidoCode;
-    private int gogunCode;
+    private int gugunCode;
     private int authority;
     private List<ParticipantDto> participants;
     private List<RouteDto> routes;

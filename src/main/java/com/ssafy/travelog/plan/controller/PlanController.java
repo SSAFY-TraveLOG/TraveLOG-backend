@@ -1,5 +1,6 @@
 package com.ssafy.travelog.plan.controller;
 
+import com.ssafy.travelog.plan.dto.PlanDto;
 import com.ssafy.travelog.plan.dto.TravelDto;
 import com.ssafy.travelog.plan.service.PlanService;
 import com.ssafy.travelog.util.Message;
@@ -69,6 +70,31 @@ public class PlanController {
                 message.setCode(StatusEnum.OK);
                 message.setMessage("요청에 성공하였습니다.");
                 message.setData(ret);
+
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return exceptionHandling(e);
+        }
+    }
+
+    @GetMapping("/{plan-no}")
+    @ApiOperation(value = "여행 계획 번호로 여행 계획을 조회한다", response = PlanDto.class)
+    public ResponseEntity<Message> getPlan(@PathVariable("plan-no") int planNo) {
+        try {
+            PlanDto plan = planService.getPlan(planNo);
+            if (plan != null) {
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(plan);
 
                 return new ResponseEntity<>(message, headers, HttpStatus.OK);
             } else {
