@@ -36,6 +36,8 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
 
     @Override
     public int join(Map<String, String> map) throws SQLException {
+        String encodePw = passwordEncoder.encode(map.get("password"));
+        map.put("password", encodePw);
         return authDao.join(map);
     }
 
@@ -79,7 +81,7 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
 
         return User.builder()
                 .username(user.getUsername())
-                .password(passwordEncoder.encode(user.getPassword()))
+                .password(user.getPassword())
                 .roles(user.getRoles().toArray(new String[0]))
                 .build();
     }
