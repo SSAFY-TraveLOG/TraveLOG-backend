@@ -11,23 +11,23 @@
         <result column="user_name" property="userName"/>
         <result column="email_id" property="emailId"/>
         <result column="email_domain" property="emailDomain"/>
-        <result column="user_state" property="status" />
+        <result column="user_state" property="status"/>
     </resultMap>
 
     <insert id="join" parameterType="map">
-            insert into user
-                (user_id, user_password, user_name, email_id, email_domain)
-            values (#{userId},#{password},#{userName},#{emailId},#{emailDomain} );
+        insert into user
+            (user_id, user_password, user_name, email_id, email_domain)
+        values (#{userId}, #{password}, #{userName}, #{emailId}, #{emailDomain});
     </insert>
 
     <select id="login" parameterType="map" resultMap="userInfo">
-        select user_no, user_id,user_name,email_id,email_domain, user_state
+        select user_no, user_id, user_name, user_password, email_id, email_domain, user_state
         from user
-        where user_id = #{userId} and user_password = #{password};
+        where user_id = #{userId};
     </select>
 
     <select id="loadUserByUsername" parameterType="map" resultMap="userInfo">
-        select user_no, user_id,user_password,user_name,email_id,email_domain, user_state
+        select user_no, user_id, user_password, user_name, email_id, email_domain, user_state
         from user
         where user_id = #{userId};
     </select>
@@ -35,13 +35,16 @@
     <select id="checkId" resultType="int">
         select count(user_id)
         from user
-        where user_state = 1 and user_id = #{userId};
+        where user_state = 1
+          and user_id = #{userId};
     </select>
 
     <select id="checkEmail" resultType="int">
         select count(email_id)
         from user
-        where user_state = 1 and email_id = #{emailId} and email_domain = #{emailDomain};
+        where user_state = 1
+          and email_id = #{emailId}
+          and email_domain = #{emailDomain};
     </select>
 
 </mapper>
