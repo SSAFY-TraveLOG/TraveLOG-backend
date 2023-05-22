@@ -21,4 +21,9 @@ public class PlanServiceImpl implements PlanService {
     public List<TravelDto> listPlan(int userNo) throws SQLException {
         return planDao.listPlan(userNo);
     }
+
+    @Override
+    public int deletePlan(int planNo) throws SQLException {
+        return planDao.deletePlanByPlanNo(planNo) + planDao.deleteParticipantsByPlanNo(planNo) + planDao.deleteRoutesByPlanNo(planNo);
+    }
 }

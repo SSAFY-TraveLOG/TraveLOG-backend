@@ -9,4 +9,7 @@ import java.util.List;
 @Mapper
 public interface PlanDao {
     List<TravelDto> listPlan(int userNo) throws SQLException;
+    int deletePlanByPlanNo(int planNo) throws SQLException;
+    int deleteParticipantsByPlanNo(int planNo) throws SQLException;
+    int deleteRoutesByPlanNo(int planNo) throws SQLException;
 }

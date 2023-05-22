@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface PlanService {
     List<TravelDto> listPlan(int userNo) throws SQLException;
+    int deletePlan(int planNo) throws SQLException;
 }

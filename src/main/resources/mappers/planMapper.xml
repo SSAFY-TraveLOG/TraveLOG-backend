@@ -19,4 +19,19 @@
             WHERE participant_no = #{userNo}
         );
     </select>
+
+    <delete id="deletePlanByPlanNo" parameterType="int">
+        DELETE FROM plan
+        WHERE plan_no = #{planNo};
+    </delete>
+
+    <delete id="deleteParticipantsByPlanNo" parameterType="int">
+        DELETE FROM participant
+        WHERE plan_no = #{planNo};
+    </delete>
+
+    <delete id="deleteRoutesByPlanNo" parameterType="int">
+        DELETE FROM route
+        WHERE plan_no = #{planNo};
+    </delete>
 </mapper>
