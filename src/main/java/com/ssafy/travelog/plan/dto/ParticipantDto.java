@@ -5,7 +5,8 @@ import lombok.*;
 @Getter
 @Setter
 public class ParticipantDto {
-    int userNo;
-    String userName;
-    int authority;
+    private int participantId;
+    private int participantNo;
+    private String participantName;
+    private int authority;
 }

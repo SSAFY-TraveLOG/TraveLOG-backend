@@ -7,6 +7,7 @@ import java.util.List;
 @Getter
 @Setter
 public class PlanDto {
+    private int planNo;
     private String title;
     private String description;
     private String startDate;

@@ -5,6 +5,7 @@ import lombok.*;
 @Getter
 @Setter
 public class TravelDto {
+    private int planNo;
     private String title;
     private String description;
     private String startDate;
