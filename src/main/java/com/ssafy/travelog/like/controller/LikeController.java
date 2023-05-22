@@ -49,6 +49,30 @@ public class LikeController {
         }
     }
 
+    @PostMapping("/attraction")
+    public ResponseEntity<Message> likeAttraction(@RequestBody Map<String, String> map) {
+        try {
+            List ret = likeService.likeAttraction(map);
+
+            if (ret != null) {
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(ret);
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return exceptionHandling(e);
+        }
+    }
+
     private ResponseEntity<Message> exceptionHandling(Exception e) {
         e.printStackTrace();
         Message message = new Message();
