@@ -22,14 +22,17 @@
         GROUP BY content_id) AS table2
         ON table1.content_id = table2.content_id
         WHERE 1=1
-        <if test="'sido-code'!=null">
-            AND table1.sido_code=#{sido-code}
+        <if test="sido != null">
+            AND table1.sido_code=#{sido}
         </if>
-        <if test="'gugun-code'!=null">
-            AND table1.gugun_code=#{gugun-code}
+        <if test="gugun != null">
+            AND table1.gugun_code=#{gugun}
         </if>
-        <if test="content-type-id!=null">
-            AND table1.content_type_id=#{content-type-id}
+        <if test="id != null">
+            AND table1.content_type_id=#{id}
+        </if>
+        <if test="word != null">
+            AND table1.title LIKE concat("%", #{word}, "%")
         </if>
         ;
     </select>
