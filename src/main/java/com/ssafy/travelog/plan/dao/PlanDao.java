@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface PlanDao {
@@ -18,4 +19,7 @@ public interface PlanDao {
     PlanDto getPlan(int planNo) throws SQLException;
     List<ParticipantDto> getParticipants(int planNo) throws SQLException;
     List<RouteDto> getRoutes(int planNo) throws SQLException;
+    int createPlan(Map<String, Object> map) throws SQLException;
+    int insertParticipants(List<Map<String, Object>> list) throws SQLException;
+    int insertRoutes(List<Map<String, Object>> list) throws SQLException;
 }

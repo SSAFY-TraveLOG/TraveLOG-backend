@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.Charset;
+import java.util.Map;
 import java.util.List;
 
 @RestController
@@ -25,6 +26,33 @@ public class PlanController {
     @Autowired
     public PlanController(PlanService planService) {
         this.planService = planService;
+    }
+
+    @PostMapping()
+    @ApiOperation(value = "입력받은 데이터로 Plan, Routes, Participants 를 생성한다")
+    public ResponseEntity<Message> createPlan(@RequestBody Map<String, Object> map){
+        int ret = 0;
+        try{
+            ret = planService.createPlan(map);
+            if (ret != 0) {
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(ret);
+
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+
+        }catch (Exception e){
+            return exceptionHandling(e);
+        }
     }
 
     @GetMapping("/list/{user-no}")
