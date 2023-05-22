@@ -55,6 +55,34 @@ public class PlanController {
         }
     }
 
+    @PatchMapping("/{plan-no}")
+    @ApiOperation(value = "입력받은 데이터로 해당 계획의 Plan, Routes, Participants 데이터를 변경한다")
+    public ResponseEntity<Message> modifyPlan(@PathVariable("plan-no") int planNo, @RequestBody Map<String, Object> map){
+        int ret = 0;
+        map.put("planNo",planNo);
+        try{
+            ret = planService.modifyPlan(map);
+            if (ret != 0) {
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(ret);
+
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+
+        }catch (Exception e){
+            return exceptionHandling(e);
+        }
+    }
+
     @GetMapping("/list/{user-no}")
     @ApiOperation(value = "입력받은 사용자의 모든 여행계획을 불러온다.", response = TravelDto.class)
     public ResponseEntity<Message> listPlan(@PathVariable("user-no") int userNo) {

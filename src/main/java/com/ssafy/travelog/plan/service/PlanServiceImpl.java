@@ -73,4 +73,46 @@ public class PlanServiceImpl implements PlanService {
 
         return planId;
     }
+
+    @Override
+    @Transactional
+    public int modifyPlan(Map<String, Object> map) throws SQLException, JsonProcessingException {
+        try{
+            int planNo = (Integer) map.get("planNo");
+            // plan 업데이트
+            planDao.modifyPlan(map);
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            if(map.get("participants") != null ){
+                // delete participant
+                planDao.deleteParticipantsByPlanNo(planNo);
+
+                String jsonArray = objectMapper.writeValueAsString(map.get("participants"));
+
+                List<Map<String, Object>> participantList = objectMapper.readValue(jsonArray, new TypeReference<List<Map<String, Object>>>() {});
+
+                for (int i = 0; i < participantList.size(); i++) {
+                    participantList.get(i).put("planNo", planNo);
+                }
+                planDao.insertParticipants(participantList);
+            }
+
+            if(map.get("routes") != null){
+                planDao.deleteRoutesByPlanNo(planNo);
+                // insert route
+                String jsonArray = objectMapper.writeValueAsString(map.get("routes"));
+                List<Map<String, Object>> routeList = objectMapper.readValue(jsonArray, new TypeReference<List<Map<String, Object>>>() {});
+
+                for (int i = 0; i < routeList.size(); i++) {
+                    routeList.get(i).put("planNo", planNo);
+                }
+
+                planDao.insertRoutes(routeList);
+            }
+            return 1;
+        } catch (Exception e){
+            return 0;
+        }
+
+    }
 }

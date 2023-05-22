@@ -22,4 +22,5 @@ public interface PlanDao {
     int createPlan(Map<String, Object> map) throws SQLException;
     int insertParticipants(List<Map<String, Object>> list) throws SQLException;
     int insertRoutes(List<Map<String, Object>> list) throws SQLException;
+    int modifyPlan(Map<String, Object> map) throws SQLException;
 }

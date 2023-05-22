@@ -13,4 +13,5 @@ public interface PlanService {
     List<TravelDto> listPlan(int userNo) throws SQLException;
     int deletePlan(int planNo) throws SQLException;
     PlanDto getPlan(int planNo) throws SQLException;
+    int modifyPlan(Map<String, Object> map) throws SQLException, JsonProcessingException;
 }
