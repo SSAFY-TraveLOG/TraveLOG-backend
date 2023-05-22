@@ -4,10 +4,8 @@ import lombok.*;
 
 @Getter
 @Setter
-public class ParticipantDto
-{
+public class ParticipantDto {
     int userNo;
-
     String userName;
     int authority;
 }
