@@ -3,4 +3,23 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ssafy.travelog.plan.dao.PlanDao">
+    <insert id="createPlan" parameterType="map" useGeneratedKeys="true" keyProperty="plan_no" >
+        insert into plan (title, description, authority, host_no, start_date,end_date, sido_code, gugun_code)
+        values
+            (#{title}, #{description}, #{authority}, #{hostNo},#{startDate}, #{endDate}, #{sidoCode}, #{gugunCode});
+    </insert>
+
+    <insert id="insertParticipants" parameterType="list">
+        insert into participant ( plan_no ,participant_no ,authority ) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.planNo},#{item.participantNo},#{item.authority})
+        </foreach>
+    </insert>
+
+    <insert id="insertRoutes" parameterType="list">
+        insert into route ( plan_no ,plan_order ,content_id, visit_date, description ) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.planNo},#{item.planOrder},#{item.contentId},#{item.visitDate},#{item.description})
+        </foreach>
+    </insert>
 </mapper>
