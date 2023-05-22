@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.travelog.plan.dao.PlanDao;
+import com.ssafy.travelog.plan.dto.TravelDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +20,14 @@ public class PlanServiceImpl implements PlanService {
     public PlanServiceImpl(PlanDao planDao) {
         this.planDao = planDao;
     }
+    public List<TravelDto> listPlan(int userNo) throws SQLException {
+        return planDao.listPlan(userNo);
+    }
+
+    @Override
+    public int deletePlan(int planNo) throws SQLException {
+        return planDao.deletePlanByPlanNo(planNo) + planDao.deleteParticipantsByPlanNo(planNo) + planDao.deleteRoutesByPlanNo(planNo);
+    }
 
     @Override
     @Transactional
@@ -28,7 +36,6 @@ public class PlanServiceImpl implements PlanService {
         map.put("plan_no", 0);
         planDao.createPlan(map);
         int planId = (int) map.get("plan_no");
-        System.out.println("planId" + planId);
 
         //그 id로 participant table에 insert하기
         ObjectMapper objectMapper = new ObjectMapper();
@@ -37,18 +44,17 @@ public class PlanServiceImpl implements PlanService {
         List<Map<String, Object>> participantList = objectMapper.readValue(jsonArray, new TypeReference<List<Map<String, Object>>>() {});
 
         for (int i = 0; i < participantList.size(); i++) {
-            participantList.get(i).put("planNo",planId );
+            participantList.get(i).put("planNo", planId);
         }
 
         planDao.insertParticipants(participantList);
 
         //그 id로 route table에 insert하기
-
         jsonArray = objectMapper.writeValueAsString(map.get("routes"));
         List<Map<String, Object>> routeList = objectMapper.readValue(jsonArray, new TypeReference<List<Map<String, Object>>>() {});
 
         for (int i = 0; i < routeList.size(); i++) {
-            routeList.get(i).put("planNo",planId );
+            routeList.get(i).put("planNo", planId);
         }
 
         planDao.insertRoutes(routeList);

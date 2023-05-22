@@ -3,6 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ssafy.travelog.plan.dao.PlanDao">
+
     <insert id="createPlan" parameterType="map" useGeneratedKeys="true" keyProperty="plan_no" >
         insert into plan (title, description, authority, host_no, start_date,end_date, sido_code, gugun_code)
         values
@@ -22,4 +23,35 @@
             (#{item.planNo},#{item.planOrder},#{item.contentId},#{item.visitDate},#{item.description})
         </foreach>
     </insert>
+
+    <select id="listPlan" parameterType="int" resultType="TravelDto">
+        SELECT plan_no as planNo, title, description, start_date as startDate, end_date as endDate, authority,
+            IF(s.sido_code &lt;= 7,
+                s.sido_name,
+                CONCAT(s.sido_name, " ", g.gugun_name)) as sidoName
+        FROM plan
+        JOIN sido s ON plan.sido_code = s.sido_code
+        JOIN gugun g ON plan.sido_code = g.sido_code
+            AND plan.gugun_code = g.gugun_code
+        WHERE plan_no in (
+            SELECT plan_no
+            FROM participant
+            WHERE participant_no = #{userNo}
+        );
+    </select>
+
+    <delete id="deletePlanByPlanNo" parameterType="int">
+        DELETE FROM plan
+        WHERE plan_no = #{planNo};
+    </delete>
+
+    <delete id="deleteParticipantsByPlanNo" parameterType="int">
+        DELETE FROM participant
+        WHERE plan_no = #{planNo};
+    </delete>
+
+    <delete id="deleteRoutesByPlanNo" parameterType="int">
+        DELETE FROM route
+        WHERE plan_no = #{planNo};
+    </delete>
 </mapper>

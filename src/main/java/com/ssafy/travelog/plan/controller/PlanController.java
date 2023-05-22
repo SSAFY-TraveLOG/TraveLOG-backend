@@ -1,8 +1,10 @@
 package com.ssafy.travelog.plan.controller;
 
+import com.ssafy.travelog.plan.dto.TravelDto;
 import com.ssafy.travelog.plan.service.PlanService;
 import com.ssafy.travelog.util.Message;
 import com.ssafy.travelog.util.StatusEnum;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.Charset;
 import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequestMapping("/plan")
@@ -25,6 +28,7 @@ public class PlanController {
     }
 
     @PostMapping()
+    @ApiOperation(value = "입력받은 데이터로 Plan, Routes, Participants 를 생성한다")
     public ResponseEntity<Message> createPlan(@RequestBody Map<String, Object> map){
         int ret = 0;
         try{
@@ -48,6 +52,61 @@ public class PlanController {
         }catch (Exception e){
             return exceptionHandling(e);
         }
+    }
+
+    @GetMapping("/list/{user-no}")
+    @ApiOperation(value = "입력받은 사용자의 모든 여행계획을 불러온다.", response = TravelDto.class)
+    public ResponseEntity<Message> listPlan(@PathVariable("user-no") int userNo) {
+        try {
+            List<TravelDto> travels = planService.listPlan(userNo);
+            Message message = new Message();
+            HttpHeaders headers = new HttpHeaders();
+
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+            if (travels != null) {
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(travels);
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                message.setStatus(StatusEnum.NO_CONTENT);
+                message.setCode(StatusEnum.NO_CONTENT);
+                message.setMessage("요청에 실패하였습니다.");
+                message.setData(null);
+                return new ResponseEntity<Message>(message, headers, HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return exceptionHandling(e);
+        }
+    }
+
+    @DeleteMapping("/{plan-no}")
+    @ApiOperation(value = "plan, participant, route 테이블에서 입력받은 여행계획의 데이터를 삭제한다.", response = TravelDto.class)
+    public ResponseEntity<Message> deletePlan(@PathVariable("plan-no") int planNo) {
+        try {
+            int ret = planService.deletePlan(planNo);
+            if (ret > 0) {
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(ret);
+
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+
+        }catch (Exception e){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+
     }
 
     private ResponseEntity<Message> exceptionHandling(Exception e) {
