@@ -6,5 +6,5 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface PlanService {
-    List<TravelDto> listPlan(int userId) throws SQLException;
+    List<TravelDto> listPlan(int userNo) throws SQLException;
 }

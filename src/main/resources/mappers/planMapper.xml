@@ -16,7 +16,7 @@
         WHERE plan_no in (
             SELECT plan_no
             FROM participant
-            WHERE participant_no = #{userId}
+            WHERE participant_no = #{userNo}
         );
     </select>
 </mapper>

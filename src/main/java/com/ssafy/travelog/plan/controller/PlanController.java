@@ -26,11 +26,11 @@ public class PlanController {
         this.planService = planService;
     }
 
-    @GetMapping("/list/{user-id}")
+    @GetMapping("/list/{user-no}")
     @ApiOperation(value = "입력받은 사용자의 모든 여행계획을 불러온다.", response = TravelDto.class)
-    public ResponseEntity<Message> listPlan(@PathVariable("user-id") int userId) {
+    public ResponseEntity<Message> listPlan(@PathVariable("user-no") int userNo) {
         try {
-            List<TravelDto> travels = planService.listPlan(userId);
+            List<TravelDto> travels = planService.listPlan(userNo);
             Message message = new Message();
             HttpHeaders headers = new HttpHeaders();
 

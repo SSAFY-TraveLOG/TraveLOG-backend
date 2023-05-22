@@ -8,5 +8,5 @@ import java.util.List;
 
 @Mapper
 public interface PlanDao {
-    List<TravelDto> listPlan(int userId) throws SQLException;
+    List<TravelDto> listPlan(int userNo) throws SQLException;
 }

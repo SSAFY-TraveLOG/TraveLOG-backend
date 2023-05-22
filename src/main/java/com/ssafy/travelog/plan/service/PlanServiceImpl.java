@@ -18,7 +18,7 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public List<TravelDto> listPlan(int userId) throws SQLException {
-        return planDao.listPlan(userId);
+    public List<TravelDto> listPlan(int userNo) throws SQLException {
+        return planDao.listPlan(userNo);
     }
 }
