@@ -5,6 +5,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SessionCallback;
+import org.springframework.data.redis.core.SetOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,5 +51,11 @@ public class LikeServiceImpl implements LikeService {
             }
         });
         return execute;
+    }
+
+    @Override
+    public Long getAttractionLikeNum(String attractionNo) {
+        SetOperations<String, Object> setOperations = redisTemplate.opsForSet();
+        return setOperations.size("like:attraction:" + attractionNo);
     }
 }

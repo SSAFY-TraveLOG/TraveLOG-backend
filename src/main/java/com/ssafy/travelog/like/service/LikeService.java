@@ -7,4 +7,6 @@ public interface LikeService {
     List likeArticle(Map<String, String> map);
 
     List likeAttraction(Map<String, String> map);
+
+    Long getAttractionLikeNum(String attractionNo);
 }
