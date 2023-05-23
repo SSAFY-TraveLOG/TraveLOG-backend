@@ -50,6 +50,11 @@
         WHERE plan_no = #{planNo};
     </delete>
 
+    <delete id="deleteParticipantsByPlanNoExcludingHost" parameterType="map">
+        DELETE FROM participant
+        WHERE plan_no = #{planNo} and host_no = #{hostNo};
+    </delete>
+
     <delete id="deleteRoutesByPlanNo" parameterType="int">
         DELETE FROM route
         WHERE plan_no = #{planNo};

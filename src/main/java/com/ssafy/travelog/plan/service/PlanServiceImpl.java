@@ -94,7 +94,7 @@ public class PlanServiceImpl implements PlanService {
 
             if(map.get("participants") != null ){
                 // delete participant
-                planDao.deleteParticipantsByPlanNo(planNo);
+                planDao.deleteParticipantsByPlanNoExcludingHost(map);
 
                 String jsonArray = objectMapper.writeValueAsString(map.get("participants"));
 
