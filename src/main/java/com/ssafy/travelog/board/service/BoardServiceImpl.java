@@ -64,4 +64,9 @@ public class BoardServiceImpl implements BoardService {
     public int updateComment(Map<String, String> map) {
         return commentDao.updateComment(map);
     }
+
+    @Override
+    public int deleteComment(int commentId) {
+        return commentDao.deleteComment(commentId);
+    }
 }

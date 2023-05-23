@@ -28,4 +28,8 @@
         UPDATE reply SET content=#{content} WHERE reply_id=#{replyId}
     </update>
 
+    <delete id="deleteComment" parameterType="int">
+        DELETE FROM reply WHERE reply_id=#{replyId}
+    </delete>
+
 </mapper>

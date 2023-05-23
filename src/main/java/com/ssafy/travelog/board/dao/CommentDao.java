@@ -14,4 +14,6 @@ public interface CommentDao {
     int writeComment(Map<String, String> map) throws SQLException;
 
     int updateComment(Map<String, String> map);
+
+    int deleteComment(int replyId);
 }
