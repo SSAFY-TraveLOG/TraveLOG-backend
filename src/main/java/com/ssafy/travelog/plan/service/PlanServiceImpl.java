@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,6 +59,14 @@ public class PlanServiceImpl implements PlanService {
         for (int i = 0; i < participantList.size(); i++) {
             participantList.get(i).put("planNo", planId);
         }
+
+        Map<String, Object> host = new HashMap<>();
+
+        host.put("planNo", planId);
+        host.put("participantNo",map.get("hostNo"));
+        host.put("authority",1);
+
+        participantList.add(host);
 
         planDao.insertParticipants(participantList);
 
