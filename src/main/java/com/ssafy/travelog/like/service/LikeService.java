@@ -12,4 +12,8 @@ public interface LikeService {
     Long getAttractionLikeNum(String attractionNo);
 
     Set getLikeAttractionList(String userNo);
+
+    Set getLikeBoardList(String userNo);
+
+    List hateArticle(Map<String, String> map);
 }
