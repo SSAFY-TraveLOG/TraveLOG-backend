@@ -26,7 +26,7 @@
 
     <select id="listPlan" parameterType="int" resultType="TravelDto">
         SELECT plan_no as planNo, title, description, start_date as startDate, end_date as endDate, authority,
-            IF(s.sido_code &lt;= 7,
+            IF(s.sido_code &lt;= 8,
                 s.sido_name,
                 CONCAT(s.sido_name, " ", g.gugun_name)) as sidoName
         FROM plan
@@ -57,7 +57,7 @@
 
     <select id="getPlan" parameterType="int" resultType="PlanDto">
         SELECT plan_no as planNo, title, description, start_date as startDate, end_date as endDate, s.sido_code as sidoCode, g.gugun_code as gugunCode, authority,
-            IF(s.sido_code &lt;= 7,
+            IF(s.sido_code &lt;= 8,
                 s.sido_name,
                 CONCAT(s.sido_name, " ", g.gugun_name)) as sidoName
         FROM plan
