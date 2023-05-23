@@ -50,6 +50,54 @@ public class LikeController {
         }
     }
 
+    @PostMapping("/article/delete")
+    public ResponseEntity<Message> hateArticle(@RequestBody Map<String, String> map) {
+        try {
+            List ret = likeService.hateArticle(map);
+
+            if (ret != null) {
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(ret);
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return exceptionHandling(e);
+        }
+    }
+
+    @GetMapping("/user/article/{userNo}")
+    public ResponseEntity<Message> getLikeBoardList(@PathVariable String userNo) {
+        try {
+            Set ret = likeService.getLikeBoardList(userNo);
+
+            if (ret != null) {
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(ret);
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return exceptionHandling(e);
+        }
+    }
+
     @PostMapping("/attraction")
     public ResponseEntity<Message> likeAttraction(@RequestBody Map<String, String> map) {
         try {

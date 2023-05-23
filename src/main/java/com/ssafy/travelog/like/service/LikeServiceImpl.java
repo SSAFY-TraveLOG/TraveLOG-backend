@@ -65,4 +65,26 @@ public class LikeServiceImpl implements LikeService {
         SetOperations<String, Object> setOperations = redisTemplate.opsForSet();
         return setOperations.members("like:user_attraction:" + userNo);
     }
+
+    @Override
+    public Set getLikeBoardList(String userNo) {
+        SetOperations<String, Object> setOperations = redisTemplate.opsForSet();
+        return setOperations.members("like:user_article:" + userNo);
+    }
+
+    @Override
+    public List hateArticle(Map<String, String> map) {
+        List<Object> execute = redisTemplate.execute(new SessionCallback<List<Object>>() {
+            @Override
+            public <K, V> List<Object> execute(RedisOperations<K, V> operations) throws DataAccessException {
+                operations.multi();
+                String key = "like:article:" + map.get("articleNo");
+                operations.opsForSet().remove((K) key, (V) map.get("userNo"));
+                key = "like:user_article:" + map.get("userNo");
+                operations.opsForSet().remove((K) key, (V) map.get("articleNo"));
+                return operations.exec();
+            }
+        });
+        return execute;
+    }
 }
