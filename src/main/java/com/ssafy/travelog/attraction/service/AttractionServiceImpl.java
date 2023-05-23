@@ -2,6 +2,7 @@ package com.ssafy.travelog.attraction.service;
 
 import com.ssafy.travelog.attraction.dao.AttractionDao;
 import com.ssafy.travelog.attraction.dto.AttractionDto;
+import com.ssafy.travelog.attraction.dto.GugunDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,5 +26,10 @@ public class AttractionServiceImpl implements AttractionService {
     @Override
     public AttractionDto attrDescription(int contentId) {
         return attractionDao.attrDescription(contentId);
+    }
+
+    @Override
+    public List<GugunDto> searchGugunBySido(int sidoCode) {
+        return attractionDao.searchGugunBySido(sidoCode);
     }
 }
