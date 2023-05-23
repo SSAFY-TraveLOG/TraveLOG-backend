@@ -25,6 +25,7 @@ public class UserDto implements UserDetails {
     private String emailId;
     private String emailDomain;
     private int status;
+    private String image;
     private TokenInfo token;
 
     @Builder.Default
