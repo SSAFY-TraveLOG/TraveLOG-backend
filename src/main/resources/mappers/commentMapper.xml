@@ -24,8 +24,8 @@
         INSERT INTO reply (user_no, article_no, content) VALUES (#{userNo}, #{articleNo}, #{content})
     </insert>
 
-    <insert id="updateComment" parameterType="map">
+    <update id="updateComment" parameterType="map">
         UPDATE reply SET content=#{content} WHERE reply_id=#{replyId}
-    </insert>
+    </update>
 
 </mapper>
