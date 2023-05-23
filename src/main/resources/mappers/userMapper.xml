@@ -4,6 +4,13 @@
 
 <mapper namespace="com.ssafy.travelog.user.dao.UserDao">
 
+    <select id="getAllUser" resultType="UserDto">
+        select user_id as userId, user_no as userNo, user_name as userName,
+               email_id as emailId, email_domain as emailDomain, image as image
+        from user
+        where user_state = 1
+    </select>
+
     <update id="modifyUser" parameterType="map">
         update user
         <set>
