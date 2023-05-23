@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.travelog.board.dao.CommentDao">
+
+    <resultMap type="com.ssafy.travelog.board.dto.CommentDto" id="CommentInfo">
+        <result column="reply_id" property="replyId"/>
+        <result column="user_no" property="userNo"/>
+        <result column="user_name" property="userName"/>
+        <result column="article_no" property="articleNo"/>
+        <result column="content" property="content"/>
+        <result column="register_time" property="registerTime"/>
+    </resultMap>
+
+    <select id="searchAll" parameterType="map" resultMap="CommentInfo">
+        SELECT reply_id, user.user_no, user.user_name, article_no, content, register_time
+        FROM reply JOIN user ON user.user_no=reply.user_no
+        WHERE article_no=#{articleNo}
+        ORDER BY register_time DESC;
+    </select>
+
+    <insert id="writeComment" parameterType="map">
+        INSERT INTO reply (user_no, article_no, content) VALUES (#{userNo}, #{articleNo}, #{content})
+    </insert>
+
+</mapper>
