@@ -188,7 +188,7 @@ public class BoardController {
         }
     }
 
-    @GetMapping("/cmt-write")
+    @PostMapping("/cmt-write")
     @ApiOperation(value = "댓글을 작성한다.", response = CommentDto.class)
     public ResponseEntity<Message> writeComment(@RequestBody Map<String, String> map) {
         try {
