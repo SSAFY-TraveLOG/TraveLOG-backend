@@ -15,6 +15,7 @@ public interface PlanDao {
     List<TravelDto> listPlan(int userNo) throws SQLException;
     int deletePlanByPlanNo(int planNo) throws SQLException;
     int deleteParticipantsByPlanNo(int planNo) throws SQLException;
+    int deleteParticipantsByPlanNoExcludingHost(Map<String, Object> map) throws SQLException;
     int deleteRoutesByPlanNo(int planNo) throws SQLException;
     PlanDto getPlan(int planNo) throws SQLException;
     List<ParticipantDto> getParticipants(int planNo) throws SQLException;

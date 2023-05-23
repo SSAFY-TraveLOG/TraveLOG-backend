@@ -50,13 +50,18 @@
         WHERE plan_no = #{planNo};
     </delete>
 
+    <delete id="deleteParticipantsByPlanNoExcludingHost" parameterType="map">
+        DELETE FROM participant
+        WHERE plan_no = #{planNo} and participant_no = #{hostNo};
+    </delete>
+
     <delete id="deleteRoutesByPlanNo" parameterType="int">
         DELETE FROM route
         WHERE plan_no = #{planNo};
     </delete>
 
     <select id="getPlan" parameterType="int" resultType="PlanDto">
-        SELECT plan_no as planNo, title, description, start_date as startDate, end_date as endDate, s.sido_code as sidoCode, g.gugun_code as gugunCode, authority,
+        SELECT plan_no as planNo, title, description, host_no as hostNo ,start_date as startDate, end_date as endDate, s.sido_code as sidoCode, g.gugun_code as gugunCode, authority,
             IF(s.sido_code &lt;= 8,
                 s.sido_name,
                 CONCAT(s.sido_name, " ", g.gugun_name)) as sidoName
