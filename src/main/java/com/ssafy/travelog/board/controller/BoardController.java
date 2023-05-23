@@ -214,6 +214,32 @@ public class BoardController {
         }
     }
 
+    @PatchMapping("/cmt-update")
+    @ApiOperation(value = "댓글을 수정한다.", response = CommentDto.class)
+    public ResponseEntity<Message> updateComment(@RequestBody Map<String, String> map) {
+        try {
+            int ret = boardService.updateComment(map);
+
+            if (ret == 1) {
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(ret);
+
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return exceptionHandling(e);
+        }
+    }
+
 
     private ResponseEntity<Message> exceptionHandling(Exception e) {
         e.printStackTrace();

@@ -21,4 +21,6 @@ public interface BoardService {
     List<CommentDto> searchAll(Map<String, String> map) throws SQLException;
 
     int writeComment(Map<String, String> map) throws SQLException;
+
+    int updateComment(Map<String, String> map);
 }

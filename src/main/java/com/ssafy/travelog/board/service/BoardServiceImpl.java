@@ -59,4 +59,9 @@ public class BoardServiceImpl implements BoardService {
     public int writeComment(Map<String, String> map) throws SQLException {
         return commentDao.writeComment(map);
     }
+
+    @Override
+    public int updateComment(Map<String, String> map) {
+        return commentDao.updateComment(map);
+    }
 }
