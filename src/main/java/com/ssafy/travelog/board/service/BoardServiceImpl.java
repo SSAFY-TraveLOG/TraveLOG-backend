@@ -51,8 +51,8 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<CommentDto> searchAll(Map<String, String> map) throws SQLException {
-        return commentDao.searchAll(map);
+    public List<CommentDto> searchAll(int articleNo) throws SQLException {
+        return commentDao.searchAll(articleNo);
     }
 
     @Override

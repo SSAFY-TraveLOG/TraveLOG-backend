@@ -18,7 +18,7 @@ public interface BoardService {
 
     List<BoardDto> search(Map<String, String> map) throws SQLException;
 
-    List<CommentDto> searchAll(Map<String, String> map) throws SQLException;
+    List<CommentDto> searchAll(int articleNo) throws SQLException;
 
     int writeComment(Map<String, String> map) throws SQLException;
 

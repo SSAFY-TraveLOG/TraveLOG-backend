@@ -162,11 +162,11 @@ public class BoardController {
         }
     }
 
-    @GetMapping("/cmt-list")
+    @GetMapping("/cmt-list/{articleNo}")
     @ApiOperation(value = "댓글을 조회한다.", response = CommentDto.class)
-    public ResponseEntity<Message> searchAllComment(@RequestBody Map<String, String> map) {
+    public ResponseEntity<Message> searchAllComment(@PathVariable int articleNo) {
         try {
-            List<CommentDto> commentList = boardService.searchAll(map);
+            List<CommentDto> commentList = boardService.searchAll(articleNo);
 
             if (commentList != null) {
                 Message message = new Message();
