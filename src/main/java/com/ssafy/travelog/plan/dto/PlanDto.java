@@ -16,6 +16,7 @@ public class PlanDto {
     private int sidoCode;
     private int gugunCode;
     private int authority;
+    private int hostNo;
     private List<ParticipantDto> participants;
     private List<RouteDto> routes;
 }
