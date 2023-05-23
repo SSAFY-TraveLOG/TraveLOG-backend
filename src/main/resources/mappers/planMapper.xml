@@ -52,7 +52,7 @@
 
     <delete id="deleteParticipantsByPlanNoExcludingHost" parameterType="map">
         DELETE FROM participant
-        WHERE plan_no = #{planNo} and host_no = #{hostNo};
+        WHERE plan_no = #{planNo} and participant_no = #{hostNo};
     </delete>
 
     <delete id="deleteRoutesByPlanNo" parameterType="int">
