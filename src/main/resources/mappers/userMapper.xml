@@ -18,6 +18,12 @@
         where user_no = #{userNo}
     </select>
 
+    <select id="checkPassword" parameterType="map" resultType="UserDto" >
+        select user_name as userName
+        from user
+        where user_no=#{userNo} and user_password = #{password}
+    </select>
+
     <update id="modifyUser" parameterType="map">
         update user
         <set>

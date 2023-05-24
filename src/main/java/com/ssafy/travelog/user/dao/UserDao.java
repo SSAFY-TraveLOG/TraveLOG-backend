@@ -12,6 +12,7 @@ import java.util.Map;
 public interface UserDao {
     List<UserDto> getAllUser() throws SQLException;
     UserDto getUserInfo(int userNo) throws SQLException;
+    UserDto checkPassword(Map<String, String> param) throws SQLException;
     int modifyUser(Map<String, String> param) throws SQLException;
     int deleteUser(Map<String, String> param) throws SQLException;
 }
