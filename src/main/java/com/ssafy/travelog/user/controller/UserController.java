@@ -82,6 +82,32 @@ public class UserController {
 
     }
 
+    @GetMapping("/{user-no}")
+    @ApiOperation(value = "특정 유저의 정보를 얻어옵니다.", response = UserDto.class)
+    public ResponseEntity<Message> getUserInfo(@PathVariable("user-no") int userNo){
+        UserDto ret = null;
+        try {
+            ret = userService.getUserInfo(userNo);
+            if(ret != null){
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(ret);
+
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e){
+            return exceptionHandling(e);
+        }
+    }
+
     @PatchMapping("/delete")
     @ApiOperation(value = "유저 정보를 삭제합니다.", response = UserDto.class)
     public ResponseEntity<Message> deleteUser(@RequestBody Map<String, String> map) {
