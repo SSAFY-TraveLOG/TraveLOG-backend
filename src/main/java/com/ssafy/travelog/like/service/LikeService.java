@@ -18,4 +18,6 @@ public interface LikeService {
     List hateArticle(Map<String, String> map);
 
     Long getArticleLikeNum(String articleNo);
+
+    List hateAttraction(Map<String, String> map);
 }
