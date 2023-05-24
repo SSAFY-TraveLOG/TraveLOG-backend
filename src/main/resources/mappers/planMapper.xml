@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.travelog.plan.dao.PlanDao">
+
+    <insert id="createPlan" parameterType="map" useGeneratedKeys="true" keyProperty="plan_no" >
+        insert into plan (title, description, authority, host_no, start_date,end_date, sido_code, gugun_code)
+        values
+            (#{title}, #{description}, #{authority}, #{hostNo},#{startDate}, #{endDate}, #{sidoCode}, #{gugunCode});
+    </insert>
+
+    <insert id="insertParticipants" parameterType="list">
+        insert into participant ( plan_no ,participant_no ,authority ) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.planNo},#{item.participantNo},#{item.authority})
+        </foreach>
+    </insert>
+
+    <insert id="insertRoutes" parameterType="list">
+        insert into route ( plan_no ,plan_order ,content_id, visit_date, description ) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.planNo},#{item.planOrder},#{item.contentId},#{item.visitDate},#{item.description})
+        </foreach>
+    </insert>
+
+    <select id="listPlan" parameterType="int" resultType="TravelDto">
+        SELECT plan_no as planNo, title, description, start_date as startDate, end_date as endDate, authority,
+            IF(s.sido_code &lt;= 8,
+                s.sido_name,
+                CONCAT(s.sido_name, " ", g.gugun_name)) as sidoName
+        FROM plan
+        JOIN sido s ON plan.sido_code = s.sido_code
+        JOIN gugun g ON plan.sido_code = g.sido_code
+            AND plan.gugun_code = g.gugun_code
+        WHERE plan_no in (
+            SELECT plan_no
+            FROM participant
+            WHERE participant_no = #{userNo}
+        );
+    </select>
+
+    <delete id="deletePlanByPlanNo" parameterType="int">
+        DELETE FROM plan
+        WHERE plan_no = #{planNo};
+    </delete>
+
+    <delete id="deleteParticipantsByPlanNo" parameterType="int">
+        DELETE FROM participant
+        WHERE plan_no = #{planNo};
+    </delete>
+
+    <delete id="deleteParticipantsByPlanNoExcludingHost" parameterType="map">
+        DELETE FROM participant
+        WHERE plan_no = #{planNo} and participant_no = #{hostNo};
+    </delete>
+
+    <delete id="deleteRoutesByPlanNo" parameterType="int">
+        DELETE FROM route
+        WHERE plan_no = #{planNo};
+    </delete>
+
+    <select id="getPlan" parameterType="int" resultType="PlanDto">
+        SELECT plan_no as planNo, title, description, host_no as hostNo ,start_date as startDate, end_date as endDate, s.sido_code as sidoCode, g.gugun_code as gugunCode, authority,
+            IF(s.sido_code &lt;= 8,
+                s.sido_name,
+                CONCAT(s.sido_name, " ", g.gugun_name)) as sidoName
+        FROM plan
+        JOIN sido s ON plan.sido_code = s.sido_code
+        JOIN gugun g ON plan.sido_code = g.sido_code
+            AND plan.gugun_code = g.gugun_code
+        WHERE plan_no = #{planNo};
+    </select>
+
+    <select id="getParticipants" parameterType="int" resultType="ParticipantDto">
+        SELECT participant_id as participantId, participant_no as participantNo, u.user_name as participantName, authority
+        FROM participant
+        JOIN user u ON participant.participant_no = u.user_no
+        WHERE plan_no = #{planNo};
+    </select>
+
+    <select id="getRoutes" parameterType="int" resultType="RouteDto">
+        SELECT route_id as routeId, plan_no as planNo, a.content_id as contentId, plan_order as planOrder,
+            visit_date as visitDate, description, a.title as title, a.content_type_id as contentTypeId,
+            a.addr1 as address, a.first_image as image, a.latitude as latitude, a.longitude as longitude
+        FROM route
+        JOIN attractionInfo a ON route.content_id = a.content_id
+        WHERE plan_no = #{planNo};
+    </select>
+
+    <update id="modifyPlan" parameterType="map">
+        update plan
+        set
+        plan_no = plan_no
+        <if test="title != null">
+            , title = #{title}
+        </if>
+        <if test="description  != null">
+            , description  = #{description }
+        </if>
+        <if test="authority != null">
+            , authority = #{authority}
+        </if>
+        <if test="start_date != null">
+            , start_date = #{start_date}
+        </if>
+        <if test="end_date != null">
+            , end_date = #{end_date}
+        </if>
+        <if test="sido_code != null">
+            , sido_code = #{sido_code}
+        </if>
+        <if test="gugun_code != null">
+            , gugun_code = #{gugun_code}
+        </if>
+        where plan_no = #{planNo};
+    </update>
+</mapper>
