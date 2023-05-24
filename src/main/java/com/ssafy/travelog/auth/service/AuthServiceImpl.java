@@ -38,6 +38,7 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
     public int join(Map<String, String> map) throws SQLException {
         String encodePw = passwordEncoder.encode(map.get("password"));
         map.put("password", encodePw);
+        map.put("image", "https://seoul16travelog.s3.ap-northeast-2.amazonaws.com/defaultUserProfile.png");
         return authDao.join(map);
     }
 
