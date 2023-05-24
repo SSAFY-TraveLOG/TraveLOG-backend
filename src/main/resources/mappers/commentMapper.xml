@@ -32,4 +32,23 @@
         DELETE FROM reply WHERE reply_id=#{replyId}
     </delete>
 
+    <select id="qnaSearchAll" parameterType="int" resultMap="CommentInfo">
+        SELECT reply_id, user.user_no, user.user_name, article_no, content, register_time
+        FROM qnaReply JOIN user ON user.user_no=qnaReply.user_no
+        WHERE article_no=#{articleNo}
+        ORDER BY register_time DESC;
+    </select>
+
+    <insert id="qnaWriteComment" parameterType="map">
+        INSERT INTO qnaReply (user_no, article_no, content) VALUES (#{userNo}, #{articleNo}, #{content})
+    </insert>
+
+    <update id="qnaUpdateComment" parameterType="map">
+        UPDATE qnaReply SET content=#{content} WHERE reply_id=#{replyId}
+    </update>
+
+    <delete id="qnaDeleteComment" parameterType="int">
+        DELETE FROM qnaReply WHERE reply_id=#{replyId}
+    </delete>
+
 </mapper>

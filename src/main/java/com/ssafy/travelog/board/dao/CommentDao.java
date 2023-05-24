@@ -16,4 +16,12 @@ public interface CommentDao {
     int updateComment(Map<String, String> map);
 
     int deleteComment(int replyId);
+
+    List<CommentDto> qnaSearchAll(int articleNo);
+
+    int qnaWriteComment(Map<String, String> map);
+
+    int qnaUpdateComment(Map<String, String> map);
+
+    int qnaDeleteComment(int commentId);
 }
