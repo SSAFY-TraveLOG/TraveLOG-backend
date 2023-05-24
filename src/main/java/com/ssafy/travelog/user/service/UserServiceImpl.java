@@ -3,7 +3,9 @@ package com.ssafy.travelog.user.service;
 import com.ssafy.travelog.user.dao.UserDao;
 
 import com.ssafy.travelog.user.dto.UserDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -27,6 +29,10 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public int modifyUser(Map<String, String> map) throws SQLException {
+        if(map.get("password") != null){
+            String encodePw = passwordEncoder.encode(map.get("password"));
+            map.put("password", encodePw);
+        }
         return userDao.modifyUser(map);
     }
 
