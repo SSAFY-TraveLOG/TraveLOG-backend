@@ -1,5 +1,6 @@
 package com.ssafy.travelog.board.service;
 
+import com.ssafy.travelog.board.dto.CommentDto;
 import com.ssafy.travelog.board.dto.QnaBoardDto;
 
 import java.sql.SQLException;
@@ -16,4 +17,12 @@ public interface QnaBoardService {
     int deleteArticle(Map<String, String> map) throws SQLException;
 
     List<QnaBoardDto> search(Map<String, String> map) throws SQLException;
+
+    List<CommentDto> searchAll(int articleNo) throws SQLException;
+
+    int writeComment(Map<String, String> map) throws SQLException;
+
+    int updateComment(Map<String, String> map) throws SQLException;
+
+    int deleteComment(int commentId) throws SQLException;
 }
