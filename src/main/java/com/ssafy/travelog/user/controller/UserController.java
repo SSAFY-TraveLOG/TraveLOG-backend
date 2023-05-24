@@ -30,6 +30,7 @@ public class UserController {
     }
 
     @GetMapping
+    @ApiOperation(value = "모든 유저의 목록을 얻어옵니다.", response = List.class)
     public ResponseEntity<Message> getAllUser(){
         List<UserDto> ret = null;
         try {
