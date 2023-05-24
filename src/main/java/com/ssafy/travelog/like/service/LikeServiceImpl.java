@@ -87,4 +87,10 @@ public class LikeServiceImpl implements LikeService {
         });
         return execute;
     }
+
+    @Override
+    public Long getArticleLikeNum(String articleNo) {
+        SetOperations<String, Object> setOperations = redisTemplate.opsForSet();
+        return setOperations.size("like:article:" + articleNo);
+    }
 }
