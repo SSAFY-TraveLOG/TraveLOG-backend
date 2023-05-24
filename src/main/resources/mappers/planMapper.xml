@@ -13,7 +13,7 @@
     <insert id="insertParticipants" parameterType="list">
         insert into participant ( plan_no ,participant_no ,authority ) values
         <foreach collection="list" item="item" separator=",">
-            (#{item.planNo},#{item.participantNo},#{item.authority})
+            (#{item.planNo},#{item.userNo},#{item.authority})
         </foreach>
     </insert>
 

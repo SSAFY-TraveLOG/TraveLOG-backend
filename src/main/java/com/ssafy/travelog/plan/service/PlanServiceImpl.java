@@ -58,14 +58,13 @@ public class PlanServiceImpl implements PlanService {
 
         for (int i = 0; i < participantList.size(); i++) {
             participantList.get(i).put("planNo", planId);
+            participantList.get(i).put("authority", 0);
         }
 
         Map<String, Object> host = new HashMap<>();
-
         host.put("planNo", planId);
-        host.put("participantNo",map.get("hostNo"));
+        host.put("userNo",map.get("hostNo"));
         host.put("authority",1);
-
         participantList.add(host);
 
         planDao.insertParticipants(participantList);
