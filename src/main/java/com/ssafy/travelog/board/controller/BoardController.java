@@ -1,6 +1,7 @@
 package com.ssafy.travelog.board.controller;
 
 import com.ssafy.travelog.board.dto.BoardDto;
+import com.ssafy.travelog.board.dto.CommentDto;
 import com.ssafy.travelog.board.service.BoardService;
 import com.ssafy.travelog.util.Message;
 import com.ssafy.travelog.util.StatusEnum;
@@ -12,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.stream.events.Comment;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
@@ -156,6 +158,110 @@ public class BoardController {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
         } catch (Exception e){
+            return exceptionHandling(e);
+        }
+    }
+
+    @GetMapping("/cmt-list/{articleNo}")
+    @ApiOperation(value = "댓글을 조회한다.", response = CommentDto.class)
+    public ResponseEntity<Message> searchAllComment(@PathVariable int articleNo) {
+        try {
+            List<CommentDto> commentList = boardService.searchAll(articleNo);
+
+            if (commentList != null) {
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(commentList);
+
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return exceptionHandling(e);
+        }
+    }
+
+    @PostMapping("/cmt-write")
+    @ApiOperation(value = "댓글을 작성한다.", response = CommentDto.class)
+    public ResponseEntity<Message> writeComment(@RequestBody Map<String, String> map) {
+        try {
+            int ret = boardService.writeComment (map);
+
+            if (ret == 1) {
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(ret);
+
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return exceptionHandling(e);
+        }
+    }
+
+    @PatchMapping("/cmt-update")
+    @ApiOperation(value = "댓글을 수정한다.", response = CommentDto.class)
+    public ResponseEntity<Message> updateComment(@RequestBody Map<String, String> map) {
+        try {
+            int ret = boardService.updateComment(map);
+
+            if (ret == 1) {
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(ret);
+
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return exceptionHandling(e);
+        }
+    }
+
+    @DeleteMapping("/cmt-delete/{commentId}")
+    @ApiOperation(value = "댓글을 삭제한다.", response = CommentDto.class)
+    public ResponseEntity<Message> deleteComment(@PathVariable int commentId) {
+        try {
+            int ret = boardService.deleteComment(commentId);
+
+            if (ret == 1) {
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(ret);
+
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
             return exceptionHandling(e);
         }
     }

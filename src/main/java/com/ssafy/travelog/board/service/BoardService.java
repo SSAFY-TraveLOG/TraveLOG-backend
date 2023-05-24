@@ -1,6 +1,7 @@
 package com.ssafy.travelog.board.service;
 
 import com.ssafy.travelog.board.dto.BoardDto;
+import com.ssafy.travelog.board.dto.CommentDto;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -16,4 +17,12 @@ public interface BoardService {
     int deleteArticle(Map<String, String> map) throws SQLException;
 
     List<BoardDto> search(Map<String, String> map) throws SQLException;
+
+    List<CommentDto> searchAll(int articleNo) throws SQLException;
+
+    int writeComment(Map<String, String> map) throws SQLException;
+
+    int updateComment(Map<String, String> map);
+
+    int deleteComment(int commentId);
 }

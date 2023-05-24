@@ -2,7 +2,6 @@ package com.ssafy.travelog.user.dto;
 
 import com.ssafy.travelog.util.jwt.TokenInfo;
 import lombok.*;
-import org.apache.ibatis.mapping.FetchType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,6 +24,7 @@ public class UserDto implements UserDetails {
     private String emailId;
     private String emailDomain;
     private int status;
+    private String image;
     private TokenInfo token;
 
     @Builder.Default
@@ -45,10 +45,6 @@ public class UserDto implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        System.out.println("....."+this.roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList()));
-
         roles.add(String.valueOf(new SimpleGrantedAuthority("auth")));
 
         return this.roles.stream()
@@ -62,7 +58,7 @@ public class UserDto implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userId;
+        return userName;
     }
 
     @Override
