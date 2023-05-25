@@ -91,32 +91,31 @@ public class PlanServiceImpl implements PlanService {
             planDao.modifyPlan(map);
             ObjectMapper objectMapper = new ObjectMapper();
 
-            if(map.get("participants") != null ){
-                // delete participant
-                planDao.deleteParticipantsByPlanNoExcludingHost(map);
+            String jsonArray = objectMapper.writeValueAsString(map.get("participants"));
+            List<Map<String, Object>> participantList = objectMapper.readValue(jsonArray, new TypeReference<List<Map<String, Object>>>() {});
 
-                String jsonArray = objectMapper.writeValueAsString(map.get("participants"));
-
-                List<Map<String, Object>> participantList = objectMapper.readValue(jsonArray, new TypeReference<List<Map<String, Object>>>() {});
-
-                for (int i = 0; i < participantList.size(); i++) {
-                    participantList.get(i).put("planNo", planNo);
-                }
-                planDao.insertParticipants(participantList);
+            for (int i = 0; i < participantList.size(); i++) {
+                participantList.get(i).put("planNo", planNo);
+                participantList.get(i).put("authority", 0);
             }
 
-            if(map.get("routes") != null){
-                planDao.deleteRoutesByPlanNo(planNo);
-                // insert route
-                String jsonArray = objectMapper.writeValueAsString(map.get("routes"));
-                List<Map<String, Object>> routeList = objectMapper.readValue(jsonArray, new TypeReference<List<Map<String, Object>>>() {});
+            Map<String, Object> host = new HashMap<>();
+            host.put("planNo", planNo);
+            host.put("userNo",map.get("hostNo"));
+            host.put("authority",1);
+            participantList.add(host);
 
-                for (int i = 0; i < routeList.size(); i++) {
-                    routeList.get(i).put("planNo", planNo);
-                }
+            planDao.insertParticipants(participantList);
 
-                planDao.insertRoutes(routeList);
+            //그 id로 route table에 insert하기
+            jsonArray = objectMapper.writeValueAsString(map.get("routes"));
+            List<Map<String, Object>> routeList = objectMapper.readValue(jsonArray, new TypeReference<List<Map<String, Object>>>() {});
+
+            for (int i = 0; i < routeList.size(); i++) {
+                routeList.get(i).put("planNo", planNo);
             }
+
+            planDao.insertRoutes(routeList);
             return 1;
         } catch (Exception e){
             return 0;
