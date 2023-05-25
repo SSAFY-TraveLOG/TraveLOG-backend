@@ -73,7 +73,7 @@
     </select>
 
     <select id="getParticipants" parameterType="int" resultType="ParticipantDto">
-        SELECT participant_id as participantId, participant_no as participantNo, u.user_name as participantName, authority
+        SELECT u.user_id as participantId, participant_no as participantNo, u.user_name as participantName, authority
         FROM participant
         JOIN user u ON participant.participant_no = u.user_no
         WHERE plan_no = #{planNo};
@@ -102,16 +102,16 @@
             , authority = #{authority}
         </if>
         <if test="start_date != null">
-            , start_date = #{start_date}
+            , start_date = #{startDate}
         </if>
         <if test="end_date != null">
-            , end_date = #{end_date}
+            , end_date = #{endDate}
         </if>
         <if test="sido_code != null">
-            , sido_code = #{sido_code}
+            , sido_code = #{sidoCode}
         </if>
         <if test="gugun_code != null">
-            , gugun_code = #{gugun_code}
+            , gugun_code = #{gugunCode}
         </if>
         where plan_no = #{planNo};
     </update>
