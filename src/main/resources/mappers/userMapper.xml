@@ -19,9 +19,9 @@
     </select>
 
     <select id="checkPassword" parameterType="map" resultType="UserDto" >
-        select user_name as userName
+        select user_password as password
         from user
-        where user_no=#{userNo} and user_password = #{password}
+        where user_no=#{userNo}
     </select>
 
     <update id="modifyUser" parameterType="map">

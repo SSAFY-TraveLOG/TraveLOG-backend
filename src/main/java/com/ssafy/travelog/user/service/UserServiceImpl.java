@@ -31,11 +31,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserDto checkPassword(Map<String, String> map) throws SQLException {
-        String encodePw = passwordEncoder.encode(map.get("password"));
-        map.put("password", encodePw);
-        System.out.println("encode" + encodePw);
-        return userDao.checkPassword(map);
+    public Boolean checkPassword(Map<String, String> map) throws SQLException {
+        return passwordEncoder.matches(map.get("password"), userDao.checkPassword(map).getPassword());
     }
 
     @Override

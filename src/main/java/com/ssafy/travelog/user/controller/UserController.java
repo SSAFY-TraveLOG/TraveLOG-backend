@@ -113,9 +113,8 @@ public class UserController {
     public ResponseEntity<Message> checkPassword(@RequestBody Map<String, String> map) {
 
         try {
-            UserDto ret = null;
-//            UserDto ret = userService.checkPassword(map);
-            if(ret != null){
+            Boolean ret = userService.checkPassword(map);
+            if(ret != false){
                 Message message = new Message();
                 HttpHeaders headers = new HttpHeaders();
 
