@@ -30,6 +30,7 @@ public class UserController {
     }
 
     @GetMapping
+    @ApiOperation(value = "모든 유저의 목록을 얻어옵니다.", response = List.class)
     public ResponseEntity<Message> getAllUser(){
         List<UserDto> ret = null;
         try {
@@ -61,6 +62,59 @@ public class UserController {
         try {
             int ret = userService.modifyUser(map);
             if(ret != 0){
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(ret);
+
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e){
+            return exceptionHandling(e);
+        }
+
+    }
+
+    @GetMapping("/{user-no}")
+    @ApiOperation(value = "특정 유저의 정보를 얻어옵니다.", response = UserDto.class)
+    public ResponseEntity<Message> getUserInfo(@PathVariable("user-no") int userNo){
+        UserDto ret = null;
+        try {
+            ret = userService.getUserInfo(userNo);
+            if(ret != null){
+                Message message = new Message();
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+                message.setStatus(StatusEnum.OK);
+                message.setCode(StatusEnum.OK);
+                message.setMessage("요청에 성공하였습니다.");
+                message.setData(ret);
+
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e){
+            return exceptionHandling(e);
+        }
+    }
+
+    @PostMapping("/check/password")
+    @ApiOperation(value = "비밀번호를 확인합니다.", response = Integer.class)
+    public ResponseEntity<Message> checkPassword(@RequestBody Map<String, String> map) {
+
+        try {
+            Boolean ret = userService.checkPassword(map);
+            if(ret != false){
                 Message message = new Message();
                 HttpHeaders headers = new HttpHeaders();
 

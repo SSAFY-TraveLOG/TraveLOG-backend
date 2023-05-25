@@ -11,6 +11,19 @@
         where user_state = 1
     </select>
 
+    <select id="getUserInfo" parameterType="int" resultType="UserDto">
+        select user_id as userId, user_no as userNo, user_name as userName,
+               email_id as emailId, email_domain as emailDomain, image as image
+        from user
+        where user_no = #{userNo}
+    </select>
+
+    <select id="checkPassword" parameterType="map" resultType="UserDto" >
+        select user_password as password
+        from user
+        where user_no=#{userNo}
+    </select>
+
     <update id="modifyUser" parameterType="map">
         update user
         <set>

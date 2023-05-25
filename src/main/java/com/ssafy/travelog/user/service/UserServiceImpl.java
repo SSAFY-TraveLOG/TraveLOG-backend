@@ -3,7 +3,10 @@ package com.ssafy.travelog.user.service;
 import com.ssafy.travelog.user.dao.UserDao;
 
 import com.ssafy.travelog.user.dto.UserDto;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -11,14 +14,11 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserService{
 
-    UserDao userDao;
-
-    @Autowired
-    public UserServiceImpl(UserDao userDao) {
-        this.userDao = userDao;
-    }
+    private final UserDao userDao;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<UserDto> getAllUser() throws SQLException {
@@ -26,7 +26,21 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public UserDto getUserInfo(int userNo) throws SQLException {
+        return userDao.getUserInfo(userNo);
+    }
+
+    @Override
+    public Boolean checkPassword(Map<String, String> map) throws SQLException {
+        return passwordEncoder.matches(map.get("password"), userDao.checkPassword(map).getPassword());
+    }
+
+    @Override
     public int modifyUser(Map<String, String> map) throws SQLException {
+        if(map.get("password") != null){
+            String encodePw = passwordEncoder.encode(map.get("password"));
+            map.put("password", encodePw);
+        }
         return userDao.modifyUser(map);
     }
 
