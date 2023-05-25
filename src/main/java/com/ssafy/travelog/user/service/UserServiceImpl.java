@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Service
 @AllArgsConstructor
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
     private final PasswordEncoder passwordEncoder;
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public int modifyUser(Map<String, String> map) throws SQLException {
-        if(map.get("password") != null){
+        if (map.get("password") != null) {
             String encodePw = passwordEncoder.encode(map.get("password"));
             map.put("password", encodePw);
         }
@@ -46,6 +46,13 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public int deleteUser(Map<String, String> map) throws SQLException {
-        return userDao.deleteUser(map);
+        if (map.get("password") != null) {
+            Boolean valid = passwordEncoder.matches(map.get("password"), getUserInfo(Integer.parseInt(map.get("userNo"))).getPassword());
+            if (valid)
+                return userDao.deleteUser(map);
+            else
+                return 0;
+        }
+        return 0;
     }
 }

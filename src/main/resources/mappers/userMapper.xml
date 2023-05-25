@@ -12,7 +12,7 @@
     </select>
 
     <select id="getUserInfo" parameterType="int" resultType="UserDto">
-        select user_id as userId, user_no as userNo, user_name as userName,
+        select user_id as userId, user_no as userNo, user_name as userName, user_password as password,
                email_id as emailId, email_domain as emailDomain, image as image
         from user
         where user_no = #{userNo}
