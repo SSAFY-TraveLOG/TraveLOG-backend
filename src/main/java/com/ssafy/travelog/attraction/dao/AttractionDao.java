@@ -1,6 +1,7 @@
 package com.ssafy.travelog.attraction.dao;
 
 import com.ssafy.travelog.attraction.dto.AttractionDto;
+import com.ssafy.travelog.attraction.dto.GugunDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -11,4 +12,6 @@ public interface AttractionDao {
     List<AttractionDto> searchByCondition(Map<String, String> map);
 
     AttractionDto attrDescription(int contentId);
+
+    List<GugunDto> searchGugunBySido(int sidoCode);
 }

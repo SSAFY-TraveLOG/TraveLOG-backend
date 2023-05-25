@@ -4,13 +4,33 @@
 
 <mapper namespace="com.ssafy.travelog.user.dao.UserDao">
 
+    <select id="getAllUser" resultType="UserDto">
+        select user_id as userId, user_no as userNo, user_name as userName,
+               email_id as emailId, email_domain as emailDomain, image as image
+        from user
+        where user_state = 1
+    </select>
+
+    <select id="getUserInfo" parameterType="int" resultType="UserDto">
+        select user_id as userId, user_no as userNo, user_name as userName, user_password as password,
+               email_id as emailId, email_domain as emailDomain, image as image
+        from user
+        where user_no = #{userNo}
+    </select>
+
+    <select id="checkPassword" parameterType="map" resultType="UserDto" >
+        select user_password as password
+        from user
+        where user_no=#{userNo}
+    </select>
+
     <update id="modifyUser" parameterType="map">
         update user
         <set>
             <if test="userName != null">user_name = #{userName},</if>
             <if test="password != null">user_password = #{password}</if>
         </set>
-        where user_no = #{id}
+        where user_no = #{userNo}
     </update>
 
     <update id="deleteUser" parameterType="map">
@@ -21,7 +41,7 @@
             email_id = "INACTIVE",
             email_domain = "INACTIVE",
             user_state = 2
-        where user_no = #{id}
+        where user_no = #{userNo}
     </update>
 
 </mapper>

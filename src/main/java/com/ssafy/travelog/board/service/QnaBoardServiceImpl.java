@@ -1,9 +1,9 @@
 package com.ssafy.travelog.board.service;
 
-import com.ssafy.travelog.board.dao.BoardDao;
 import com.ssafy.travelog.board.dao.CommentDao;
-import com.ssafy.travelog.board.dto.BoardDto;
+import com.ssafy.travelog.board.dao.QnaBoardDao;
 import com.ssafy.travelog.board.dto.CommentDto;
+import com.ssafy.travelog.board.dto.QnaBoardDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class BoardServiceImpl implements BoardService {
-    private BoardDao boardDao;
+public class QnaBoardServiceImpl implements QnaBoardService {
+    private QnaBoardDao boardDao;
     private CommentDao commentDao;
 
     @Autowired
-    public BoardServiceImpl(BoardDao boardDao, CommentDao commentDao) {
+    public QnaBoardServiceImpl(QnaBoardDao boardDao, CommentDao commentDao) {
         this.boardDao = boardDao;
         this.commentDao = commentDao;
     }
@@ -30,7 +30,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @Transactional
-    public BoardDto getArticle(Map<String, String> map) throws SQLException {
+    public QnaBoardDto getArticle(Map<String, String> map) throws SQLException {
         boardDao.increaseReadCount(map);
         return boardDao.getArticle(map);
     }
@@ -46,27 +46,27 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<BoardDto> search(Map<String, String> map) throws SQLException {
+    public List<QnaBoardDto> search(Map<String, String> map) throws SQLException {
         return boardDao.searchArticle(map);
     }
 
     @Override
     public List<CommentDto> searchAll(int articleNo) throws SQLException {
-        return commentDao.searchAll(articleNo);
+        return commentDao.qnaSearchAll(articleNo);
     }
 
     @Override
     public int writeComment(Map<String, String> map) throws SQLException {
-        return commentDao.writeComment(map);
+        return commentDao.qnaWriteComment(map);
     }
 
     @Override
-    public int updateComment(Map<String, String> map) {
-        return commentDao.updateComment(map);
+    public int updateComment(Map<String, String> map) throws SQLException {
+        return commentDao.qnaUpdateComment(map);
     }
 
     @Override
-    public int deleteComment(int commentId) {
-        return commentDao.deleteComment(commentId);
+    public int deleteComment(int commentId) throws SQLException {
+        return commentDao.qnaDeleteComment(commentId);
     }
 }
