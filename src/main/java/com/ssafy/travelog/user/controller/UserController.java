@@ -114,7 +114,7 @@ public class UserController {
 
         try {
             Boolean ret = userService.checkPassword(map);
-            if(ret != false){
+            if(ret != null){
                 Message message = new Message();
                 HttpHeaders headers = new HttpHeaders();
 
