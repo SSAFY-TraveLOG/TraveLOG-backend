@@ -93,7 +93,8 @@ public class PlanServiceImpl implements PlanService {
 
             String jsonArray = objectMapper.writeValueAsString(map.get("participants"));
             List<Map<String, Object>> participantList = objectMapper.readValue(jsonArray, new TypeReference<List<Map<String, Object>>>() {});
-
+            planDao.deleteParticipantsByPlanNoExcludingHost(map);
+            planDao.deleteRoutesByPlanNo(planNo);
             for (int i = 0; i < participantList.size(); i++) {
                 participantList.get(i).put("planNo", planNo);
                 participantList.get(i).put("authority", 0);
